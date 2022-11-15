@@ -1,0 +1,217 @@
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" *ngIf="currentUser['tenantUsers']['userRole']['customer'] !== 'x'">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat red">
+                <div class="visual">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{customerCount}}
+                    </div>
+                    <div class="desc">									
+                        Müşteri Sayısı
+                    </div>
+                </div>
+                <a class="more" routerLink='/pages/customers'>
+                Göster <i class="m-icon-swapright m-icon-white"></i>
+                </a>						
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" *ngIf="currentUser['tenantUsers']['userRole']['invoice'] !== 'x'">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat green">
+                <div class="visual">
+                    <i class="fa fa-inbox"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{incomingInvoices}}
+                    </div>
+                    <div class="desc">									
+                        Gelen Faturalar
+                    </div>
+                </div>
+                <a class="more" routerLink='/pages/allinvoices/invoicesInbox'>
+                Gelen Fatura <i class="m-icon-swapright m-icon-white"></i>
+                </a>					
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" *ngIf="currentUser['tenantUsers']['userRole']['invoice'] !== 'x'" >
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat blue">
+                <div class="visual">
+                    <i class="fa fa-envelope-open"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{sendedInvoice}}
+                    </div>
+                    <div class="desc">									
+                        Giden Faturalar
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" routerLink='/pages/allinvoices/invoicesOutbox' style="color:rgb(228, 228, 228)">Giden Fatura</a> <a style="color:white"></a>
+                </a>						
+            </div>
+        </div>
+    </div> 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat yellow">
+                <div class="visual">
+                    <i class="fa fa-bars"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{credit}}
+                    </div>
+                    <div class="desc">
+                        Kalan Kullanım (Gün)
+                    </div>
+                </div>
+                <a class="more" *ngIf="currentUser.tenantUsers.tenant.tenantType === 'SUPERADMIN'">
+                    <a id="a" routerLink='/pages/manage' style="color:rgb(228, 228, 228)">Gün İstekleri</a>
+                </a>
+            </div>
+        </div>
+    </div>
+<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+    <div *ngIf="statistic" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat yellow">
+                <div class="visual">
+                    <i class="fa fa-gg-circle"></i>
+                    <p style="color:white;">Kontör</p>
+                </div>
+                <div class="details">
+                        <div class="number">
+                            {{statistic.spentCredit}}
+                        </div>
+                        <div class="desc">
+                            Harcanan
+                        </div>
+                    </div>
+                <div class="details">
+                    <div class="number">
+                        {{statistic.remainingCredit}}
+                    </div>
+                    <div class="desc">
+                        Kalan
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" *ngIf="currentUser.tenantUsers.tenant.tenantInfo.isEfaturaUser" (click)="sendCreditRequest()" routerLink='/pages/dashboard' style="color:rgb(228, 228, 228)">Kontör Talep Et</a>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="statistic && currentUser.tenantUsers.userRole.isEinvoiceAdmin || currentUser.tenantUsers.userRole.isSuperAdmin" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat blue">
+                <div class="visual">
+                    <i class="fa fa-gg-circle"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{statistic.creditRequestCount}}
+                    </div>
+                    <div class="desc">
+                        Kontör İstekleri
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" *ngIf="currentUser.tenantUsers.userRole.isEinvoiceAdmin || currentUser.tenantUsers.userRole.isSuperAdmin"
+                         routerLink='/pages/einvoice-admin/credit' style="color:rgb(228, 228, 228)">Kontör İstekleri</a>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="statistic && currentUser.tenantUsers.userRole.isEinvoiceAdmin || currentUser.tenantUsers.userRole.isSuperAdmin" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat green">
+                <div class="visual">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{statistic.userCount}}
+                    </div>
+                    <div class="desc">
+                        Mükellef Sayısı
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" *ngIf="currentUser.tenantUsers.userRole.isEinvoiceAdmin || currentUser.tenantUsers.userRole.isSuperAdmin"
+                         routerLink='/pages/einvoice-admin/user' style="color:rgb(228, 228, 228)">Mükellefler</a>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="statistic && currentUser.tenantUsers.tenant.tenantInfo.isEfaturaUser" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat purple">
+                <div class="visual">
+                    <i class="fa fa-envelope-open"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{statistic.incomingCount}}
+                    </div>
+                    <div class="desc">
+                        Gelen Efatura
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" *ngIf="currentUser.tenantUsers.tenant.tenantInfo.isEfaturaUser"
+                         routerLink='/pages/allinvoices/invoicesInbox/einvoice' style="color:rgb(228, 228, 228)">Gelen Efaturalar</a>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="statistic && currentUser.tenantUsers.tenant.tenantInfo.isEfaturaUser" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat red">
+                <div class="visual">
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{statistic.outgoingCount}}
+                    </div>
+                    <div class="desc">
+                        Giden Efatura
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" *ngIf="currentUser.tenantUsers.tenant.tenantInfo.isEfaturaUser"
+                         routerLink='/pages/allinvoices/invoicesOutbox/einvoice' style="color:rgb(228, 228, 228)">Giden Efaturalar</a>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="statistic && currentUser.tenantUsers.userRole.isSuperAdmin" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+            <div class="dashboard-stat grey">
+                <div class="visual">
+                    <i class="fa fa-user-secret"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        {{statistic.adminCount}}
+                    </div>
+                    <div class="desc">
+                        Efatura Admin Sayısı
+                    </div>
+                </div>
+                <a class="more">
+                    <a id="a" *ngIf="currentUser.tenantUsers.userRole.isSuperAdmin"
+                         routerLink='/pages/einvoice-admin/admin' style="color:rgb(228, 228, 228)">Efatura Adminler</a>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

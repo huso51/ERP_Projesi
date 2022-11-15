@@ -1,0 +1,36 @@
+<div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)"
+     [ngClass]="{scrolled: isScrolled}">
+  <a routerLink="/pages/dashboard" class="al-logo clearfix"><span>PORTAL</span></a>
+  <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
+
+
+  <div class="user-profile clearfix">
+    <div class="dropdown al-user-profile">
+      <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+        <!--
+        <img src="assets/img/app/profile/Nasta.png">
+        -->
+      
+            <img *ngIf="currentUser.tenantUsers.tenant.logo" [src]="'data:image/jpg;base64,' + currentUser.tenantUsers.tenant.logo" alt="" />
+            <img *ngIf="!currentUser.tenantUsers.tenant.logo" src="./../assets/img/javatr-logo.png" />
+      </a>
+      <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+        <!--
+        <li class="dropdown-item"><a href><i class="fa fa-user"></i>Profile</a></li>
+        <li class="dropdown-item"><a href><i class="fa fa-cog"></i>Settings</a></li>
+        -->
+        <li class="dropdown-item" *ngFor="let item of tenants; let ind=index">
+            <a class="signout" *ngIf="currentUser.tenantUsers.tenant.id !== item.tenant.id" (click)="updateDefaultTenant(ind)">
+                <i class="fa fa-industry"></i>{{item.tenant.name}}
+            </a>
+            <a class="signout" *ngIf="currentUser.tenantUsers.tenant.id === item.tenant.id" (click)="updateDefaultTenant(ind)">
+                <i class="fa fa-industry"></i><b style="color:black;">{{item.tenant.name}}</b>
+            </a>
+        </li>
+        <li class="dropdown-item"><a class="signout" (click)="openUserModal()"><i class="fa fa-user"></i>Profil</a></li>
+        <li class="dropdown-item"><a href class="signout" (click)="logout()"><i class="fa fa-power-off"></i>Çıkış</a></li>
+      </ul>
+    </div>
+   <!-- <ba-msg-center></ba-msg-center> -->
+  </div>
+</div>

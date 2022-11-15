@@ -1,0 +1,54 @@
+@import "../../../theme/sass/conf/conf";
+
+.modal-buttons .btn {
+  margin-right: 20px;
+}
+
+.modal-content {
+  color: black;
+  background-color:  rgba(230, 230, 230, 0.9);
+}
+.form-control{
+  color: black;
+  background-color: white;
+}
+#image-row{
+  background-color:  rgba(230, 230, 230, 0.9);
+}
+.col-sm-3{
+  margin: auto;
+  max-width: 100%;
+}
+img{
+  width: 150px;
+  height: 150px;
+}
+.row{
+  background-color: white;
+}
+.col-md-4{
+  background-color:  rgba(47, 87, 86, 0.9);
+  border-bottom-right-radius: 5em;
+  border-top-right-radius: 5em;
+  color:white;
+}
+
+
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #444;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #444;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #444;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #444;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #444;
+}

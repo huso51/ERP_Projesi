@@ -1,0 +1,18 @@
+@import '../../theme/sass/auth';
+
+.auth-block{
+    width: 650px;
+    background-color: #262626;
+    color: #efefef;
+}
+.auth-block a {
+    color: goldenrod;
+}
+.auth-block a:hover {
+    color: #DD1B16;
+}
+.btn-auth {
+    background-color: #DD1B16;
+    color: #efefef;
+    float: right;
+}

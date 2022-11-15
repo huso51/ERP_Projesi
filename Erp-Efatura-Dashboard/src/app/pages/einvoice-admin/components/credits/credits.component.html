@@ -1,0 +1,86 @@
+<div class="widgets">
+  
+    <div class="row">
+        <div title="Kontör İsteği Arama" class="card data-table-container">
+            <div class="row">
+                <div class="col-md-2" title="TCKN/VKN">
+                    <label class="label-control">TCKN/VKN</label>
+                    <input class="form-control input-sm" [(ngModel)]="vkn" (keyup.enter)="search()" type="text" placeholder="TCKN/VKN" />
+                </div>
+                <div class="col-md-2" title="İsim/Ünvan">
+                    <label class="label-control">İsim/Ünvan</label>
+                    <input class="form-control input-sm" [(ngModel)]="name" (keyup.enter)="search()" type="text" placeholder="İsim/Ünvan" />
+                </div>
+                <div class="col-md-2" title="Onaylı/Onaysız">
+                    <label class="col-sm-12 label-control">Onaylı/Onaysız</label>
+                    <select class="form-control input-sm" (change)="search()" [(ngModel)]="confirmed">
+                        <option [ngValue]="true">Onaylı</option>
+                        <option [ngValue]="false">Onaysız</option>
+                    </select>
+                </div>
+                <div *ngIf="user.tenantUsers.userRole.isSuperAdmin" class="col-md-2" title="Bayi/Mükellef">
+                    <label class="col-sm-12 label-control">Bayi/Mükellef</label>
+                    <select class="form-control input-sm" (change)="search()" [(ngModel)]="isSuperAdminRequest">
+                        <option [ngValue]="true">Bayi</option>
+                        <option [ngValue]="false">Mükellef</option>
+                    </select>
+                </div>
+                <div class="col-md-2" title="Satır Sayısı">
+                    <label class="label-control">SatırSayısı</label>
+                    <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="500" step="20"/>
+                </div>
+                <div class="col-md-2" title="Sayfa">
+                    <label class="label-control">Sayfa</label>
+                    <input class="form-control input-sm" [(ngModel)]="offset" (keyup.enter)="search()" type="number" min="0" max="200" step="1"/>
+                </div>
+            
+            </div>
+            <div class="row">
+                <div id="search-button" class="col-sm-4" title="Ara">
+                        <button class="btn btn-success" (click)="search()">Ara</button>
+                </div>
+                <div title="user.tenantUsers.userRole.isEinvoiceAdmin" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                        <button class="btn btn-info" (click)="sendCreditRequest('AdminToSuperAdmin')">Yeni İstek</button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="İstek Bilgileri">İstek Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th *ngIf="!isSuperAdminRequest" title="TCKN/VKN">TCKN/VKN</th>
+                            <th title="İsim/Ünvan">İsim/Ünvan</th>
+                            <th title="Açıklama">Açıklama</th>
+                            <th title="Miktar">Miktar</th>
+                            <th title="Tarih">Tarih</th>                            
+                            <th title="İşlemler" class="align-right">İşlemler</th>
+
+                            <!-- <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of creditRequests; let ind=index">
+                            <td *ngIf="!isSuperAdminRequest" title="{{item.user ? item.user.id : item.admin.id}}">{{item.user ? item.user.id : item.admin.id}}</td>
+                            <td title="{{item.user ? item.user.name : item.admin.name}}">{{item.user ? item.user.name : item.admin.name}}</td>
+                            <td title="{{item.amount}}">{{item.amount}}</td>
+                            <td title="{{item.description}}">{{item.description}}</td>
+                            <td title="{{item.createdAt}}">{{item.createdAt}}</td>
+                            <td title="" class="align-right">
+                                <button title="Düzenle" *ngIf="user.tenantUsers.userRole.isEinvoiceAdmin" (click)="acceptRequest(ind)" class="btn btn-success"><i class="ion-checkmark"></i></button>
+                            </td>
+                            <!-- <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="11">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

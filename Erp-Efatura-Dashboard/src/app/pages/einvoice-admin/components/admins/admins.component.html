@@ -1,0 +1,76 @@
+<div class="widgets">
+  
+    <div class="row">
+        <div title="Efatura Admin Arama" class="card data-table-container">
+                <div class="row">
+                        <div class="col-md-2" title="TCKN/VKN">
+                            <label class="label-control">TCKN/VKN</label>
+                            <input class="form-control input-sm" [(ngModel)]="vkn" (keyup.enter)="search()" type="text" placeholder="TCKN/VKN"/>
+                        </div>
+                        <div class="col-md-2" title="İsim/Ünvan">
+                            <label class="label-control">İsim/Ünvan</label>
+                            <input class="form-control input-sm" [(ngModel)]="name" (keyup.enter)="search()" type="text" placeholder="İsim/Ünvan"/>
+                        </div>
+                        <div class="col-md-2" title="Aktif/Pasif">
+                            <label class="col-sm-12 label-control">Aktif/Pasif</label>
+                            <select class="form-control input-sm" (change)="search()" [(ngModel)]="confirmed">
+                                <option [ngValue]="true">Aktif</option>
+                                <option [ngValue]="false">Pasif</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2" title="Satır Sayısı">
+                            <label class="label-control">SatırSayısı</label>
+                            <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="500" step="20" />
+                        </div>
+                        <div class="col-md-2" title="Sayfa">
+                            <label class="label-control">Sayfa</label>
+                            <input class="form-control input-sm" [(ngModel)]="offset" (keyup.enter)="search()" type="number" min="0" max="200" step="1" />
+                        </div>
+                        
+                    </div>
+            <div class="row">
+                <div id="search-button" class="col-sm-4" title="Ara">
+                        <button class="btn btn-success" (click)="search()"><i class="fa fa-refresh"></i></button>
+                </div>
+                <div title="Yeni Efatura Admin" *ngIf="user.tenantUsers.userRole.isSuperAdmin" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                        <button class="btn btn-success" (click)="addEinvoiceUser('EinvoiceAdmin')">Yeni Efatura Admin</button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Admin Bilgileri">Admin Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="Adı">Adı</th>
+                            <th title="E-posta">E-posta</th>
+                            <th title="Kontör">Kontör</th>
+                            <!--<th title="İşlemler" class="align-right">İşlemler</th>
+
+                             <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of admins; let ind=index">
+                            <td title="{{item.name}}">{{item.name}}</td>
+                            <td title="{{item.email}}">{{item.email}}</td>
+                            <td title="{{item.credit}}">{{item.credit}}</td>
+                            <!--<td title="" class="align-right">
+                                <button title="Düzenle" *ngIf="user.tenantUsers.userRole.item=='w'" (click)="updateCategory(ind)" class="btn btn-primary"><i class="ion-edit"></i></button>
+                                <button title="Sil" *ngIf="user.tenantUsers.userRole.item=='w'" (click)="deleteCategory(ind)" class="btn btn-danger"><i class="ion-trash-a"></i></button>
+                            </td>
+                             <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="11">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

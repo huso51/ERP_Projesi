@@ -1,0 +1,32 @@
+<div class="row" style="padding-left: 10px">
+    <ul class="col-xl-4 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4" *ngIf="currentUser['tenantUsers']['userRole']['invoice'] !== 'x'">
+      <li class="list-group-item admin-panel" style="color:white;">Fatura</li>
+      <li routerLink='/pages/allinvoices/invoicesInbox' id="asd" class="list-group-item"><a routerLink='/pages/einvoice/inbox/invoice-based' style="color:black;">Gelen Kutusu</a></li>
+      <li routerLink='/pages/allinvoices/invoicesOutbox' id="asd" class="list-group-item"><a routerLink='/pages/einvoice/outbox/invoice-based' style="color:black;">Giden Kutusu</a></li>
+    </ul>
+    <br>
+    <ul class="col-xl-4 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4">
+      <li class="list-group-item earchivepanel" style="color:white;">Kontör</li>
+      <li id="asd" (click)="sendCreditRequest()" style="cursor: pointer;" class="list-group-item" *ngIf="!currentUser.tenantUsers.userRole.isSuperAdmin">
+        <a style="color:black;">Kontör Talebi</a>
+      </li>
+      <li id="asd" routerLink="/pages/einvoice-admin/credit" style="cursor: pointer;" class="list-group-item" *ngIf="currentUser.tenantUsers.userRole.isEinvoiceAdmin || currentUser.tenantUsers.userRole.isSuperAdmin">
+          <a style="color:black;">Kontör Talepleri</a>
+        </li>
+      <!-- <li class="list-group-item"><a routerLink='/pages/earchive/outbox/old-invoices'>Rapor Listesi</a></li> -->
+    </ul>
+    <br>
+
+    <ul class="col-xl-4 col-lg-4 col-md-4 col-sm-6 pl-2 pr-2 mb-4" *ngIf="currentUser.tenantUsers.userRole.isTenantAdmin || currentUser.tenantUsers.userRole.isSuperAdmin || currentUser.tenantUsers.userRole.customer !== 'x'">
+      <li class="list-group-item cameColor" style="color:white;">Yönetim Paneli</li>
+      <li id="asd" routerLink='/pages/manage' class="list-group-item" *ngIf="currentUser.tenantUsers.userRole.isSuperAdmin">
+        <a style="color:black;">Firma Yönetimi</a>
+      </li>
+      <li id="asd" routerLink='/pages/customers' class="list-group-item" *ngIf="currentUser['tenantUsers']['userRole']['customer'] !== 'x'">
+        <a routerLink='/pages/members' style="color:black;">Müşteri Bilgileri</a>
+      </li>
+      <li id="asd" routerLink='/pages/options' class="list-group-item" *ngIf="currentUser.tenantUsers.userRole.isTenantAdmin">
+        <a routerLink='/pages/options' style="color:black;">Sistem Ayarları</a>
+      </li>
+    </ul>  
+</div>

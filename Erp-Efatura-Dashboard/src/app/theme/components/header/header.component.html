@@ -1,0 +1,167 @@
+ <nav class="navbar box-shadow app-header" [class.fixed-top]="settings.theme.navbarIsFixed" [class.logo-visible]="showInfoContent">
+    <div class="d-flex flex-column w-100">
+        <div id="info-content" class="panel-collapse collapse">
+            <!-- <a class="close" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent" [class.show]="showInfoContent">
+                <span aria-hidden="true">&times;</span>
+            </a> -->
+            <!-- <div class="row align-items-center">
+                <div class="col-md-5">
+                    <div class="d-flex justify-content-center align-items-center pt-md-0 pt-3 info">
+                        <img src="assets/img/logo.png" class="rounded-circle user-img">
+                        <div class="d-flex flex-column pl-3">
+                            <h5 class="mb-0">Java Yazılım <i class="fa fa-check-circle fs-13 text-success ml-2"></i></h5>
+                            <span>Yazılım Donanım A.Ş</span>
+                            <div class="pt-3">
+                                <button class="btn btn-success">Profile</button>
+                                <button class="btn btn-gray">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="row py-4">
+                        <div class="col-lg-7 col-sm-8 col-12 left-border">
+                            <div class="info w-280p mx-auto text-center">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm" placeholder="İsim">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm" placeholder="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control form-control-sm" placeholder="İçerik" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-gray"><i class="fa fa-paper-plane mr-2"></i>Gönder</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="d-flex justify-content-start align-items-center top-navbar">
+
+            <a class="logo" routerLink="/" (click)="closeSubMenus()">
+                <span class="start"></span><span class="ng"><img src="assets/img/rsz_jv.png" style="width:65px; height:29px;"></span>
+            </a>
+
+            <span class="navbar-text menu-icon transition ml-3 mr-3" [ngClass]="{'open': settings.theme.showMenu}"
+                (click)="settings.theme.showMenu = !settings.theme.showMenu">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </span>
+            <!-- <div class="ml-2 mr-2 hidden-xs-down">
+                 <a id="info-content-icon" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent" class="d-flex" [class.show]="showInfoContent">
+                    <div [@showInfo]="showInfoContent" class="triangle"></div>
+                </a>
+            </div> -->
+
+            <!-- <form class="app-search hidden-sm-down ml-3">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Type to search..." class="form-control">
+            </form> -->
+
+            <app-favorites></app-favorites>
+
+
+            <div class="top-rigth-icons ml-auto">
+                <!-- <span class="hidden-xs-down">
+                    <app-flags-menu></app-flags-menu>
+                </span> -->
+                <span class="hidden-xs-down">
+                    <app-fullscreen></app-fullscreen>
+                </span>
+                <!-- <span class="hidden-xs-down">
+                    <app-applications></app-applications>
+                </span> -->
+                <!-- <span class="hidden-xs-down">
+                    <app-messages></app-messages>
+                </span> -->
+                <!-- <span class="hidden-xs-down pl-2 pr-2" (click)="settings.theme.showSideChat = !settings.theme.showSideChat">
+                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                </span> -->
+                <!-- <span class="hidden-xs-down">
+                    <app-user-menu></app-user-menu>
+                </span> -->
+                <span class="pl-2 pr-2">
+                    <!--<a (click)="logout()">
+                        <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                    </a>-->
+                    <div class="dropdown al-user-profile">
+                        <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                              <img *ngIf="currentUser.tenantUsers.tenant.logo" [src]="'data:image/jpg;base64,' + currentUser.tenantUsers.tenant.logo" alt="" />
+                              <img *ngIf="!currentUser.tenantUsers.tenant.logo" src="/assets/img/users/default-user.jpg" />
+                        </a>
+                        <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+                          <li class="dropdown-item" *ngFor="let item of tenants; let ind=index">
+                              <a class="signout" *ngIf="currentUser.tenantUsers.tenant.id !== item.tenant.id" (click)="updateDefaultTenant(ind)">
+                                  <i class="fa fa-industry"></i>{{item.tenant.name}}
+                              </a>
+                              <a class="signout" *ngIf="currentUser.tenantUsers.tenant.id === item.tenant.id" (click)="updateDefaultTenant(ind)">
+                                  <i class="fa fa-industry"></i><b style="color:black;">{{item.tenant.name}}</b>
+                              </a>
+                          </li>
+                          <li class="dropdown-item"><a class="signout" (click)="openUserModal()"><i class="fa fa-user"></i> Profil</a></li>
+                          <li class="dropdown-item"><a href class="signout" (click)="logout()"><i class="fa fa-power-off"></i> Çıkış</a></li>
+                        </ul>
+                      </div>
+                  
+                </span>
+            </div>
+
+            <!--<div class="d-flex ml-auto">
+                <form class="app-search hidden-xs-down ml-2 mr-2">
+                    <i class="fa fa-search"></i>
+                    <input type="text" placeholder="Type to search..." class="form-control">
+                </form>
+                <span class="ml-2 mr-2">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </span>
+            </div>-->
+
+
+
+
+
+            <!--<span class="navbar-text ml-2 mr-2">
+                <a id="info-content-icon" data-toggle="collapse" href="#info-content" (click)="showInfoContent = !showInfoContent" [class.show]="showInfoContent">
+                    <i [@showInfo]="showInfoContent" class="fa fa-arrow-circle-o-down"></i>
+                </a>
+            </span>           -->
+
+
+            <!--<div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    <a class="nav-link" [routerLink]="['/']">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/login']">Link</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                </ul>
+                <form class="form-inline mt-2 mt-md-0 ml-auto ">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>-->
+
+
+        </div>
+
+        <div class="horizontal-menu-outer" *ngIf="settings.theme.menu == 'horizontal'">
+
+            <app-horizontal-menu *ngIf="showHorizontalMenu"  [menuItems]="menuItems"></app-horizontal-menu>
+            <app-vertical-menu *ngIf="!showHorizontalMenu"  [menuItems]="menuItems"></app-vertical-menu>
+
+        </div>
+
+
+
+    </div>
+</nav>

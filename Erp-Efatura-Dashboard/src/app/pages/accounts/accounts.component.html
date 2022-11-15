@@ -1,0 +1,90 @@
+<div class="widgets">
+  
+    <div class="row">
+        <div title="Hesap Arama" class="card data-table-container">
+            <div class="row">
+                
+            </div>
+            <div class="row">
+                <div class="col-md-2" title="H.Numarası">
+                    <label class="label-control">H.Numarası</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchAccountNo" (keyup.enter)="search()" type="number" placeholder="Hesap No"/>
+                </div>
+                <div class="col-md-2" title="Hesap Adı">
+                    <label class="label-control">Hesap Adı</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchAccount" (keyup.enter)="search()" type="text" placeholder="Hesap Adı"/>
+                </div>
+                <div class="col-md-2" title="Satır Sayısı">
+                    <label class="label-control">SatırSayısı</label>
+                    <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="200" step="20" />
+                </div>
+                <div class="col-md-2" title="Ölçütler">
+                    <label class="col-sm-12 label-control">Ölçütler</label>
+                    <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderSelect">
+                        <option ngValue="no">Hesap Numarası</option>
+                        <option ngValue="name">Hesap Adı</option>
+                        <option ngValue="created_at">Üyelik Tarihi</option>
+                    </select>
+                </div>
+                <div class="col-md-2" title="Sıralama">
+                  <label class="col-sm-12 label-control">Sıralama</label>
+                   <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderBy">
+                       <option ngValue="asc">Artan</option>
+                        <option ngValue="desc">Azalan</option>
+                   </select>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div id="search-button" title="Ara" class="col-sm-4">
+                        <button class="btn btn-success" (click)="search()"><i class="fa fa-refresh"></i> Ara</button>
+                </div>
+                <div *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" title="Yeni Hesap" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                    <button class="btn btn-success" (click)="accountTransaction('addmoney')">Bakiye Ekle/Çıkar</button> 
+                    <button class="btn btn-warning" (click)="accountTransaction('transfer')">Bakiye Transfer</button>    
+                    <button class="btn btn-info" (click)="accountTransaction('account')">Yeni Hesap</button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Hesap Bilgileri">Hesap Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="H.Numarası">H.Numarası</th>
+                            <th title="H.Adı">H.Adı</th>
+                            <th title="Açıklama">Açıklama</th>
+                            <th title="Bakiye">Bakiye</th>
+                            <th title="Tarih">Tarih</th>
+                            <th title="Düzenle" class="align-right">Düzenle</th>
+
+                            <!-- <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of accounts; let ind=index">
+                            <td title="{{item.no}}">{{item.no}}</td>
+                            <td title="{{item.name}}" id="name">{{item.name}}</td>
+                            <td title="{{item.description}}" id="description">{{item.description}}</td>
+                            <td title="{{item.amount}}">{{item.amount}}</td>
+                            <td title="{{item.createdAt}}">{{item.createdAt}}</td>
+                            <td title="" class="align-right">
+                                <button title="Hesap Hareketleri" *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" (click)="accountActivities(ind)" class="btn btn-warning"><i class="ion-clipboard"></i></button>
+                                <button title="Düzenle" *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" (click)="updateCustomer(ind)" class="btn btn-primary"><i class="ion-edit"></i></button>
+                                <button title="Sil" *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" (click)="deleteCustomer(ind)" class="btn btn-danger"><i class="ion-trash-a"></i></button>
+                            </td>
+                            <!-- <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="12">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

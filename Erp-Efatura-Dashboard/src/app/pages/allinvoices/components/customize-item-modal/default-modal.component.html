@@ -1,0 +1,80 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">Ürün Düzenleme</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #z="ngForm">
+        <div class="row">
+        <div class="col-6 col-md-4">Adı</div>
+        <div class="col-12 col-md-8">
+          {{invoiceLine.item.name}}
+        </div>
+        </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Adet</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="invoiceLine.quantity" (change)="calculateItemSum()"
+              name="quantity" #quantity="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Birim Fiyat</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Birim Fiyat" [(ngModel)]="invoiceLine.item.price" (change)="calculateItemSum()"
+             name="price" #price="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">İndirim</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="invoiceLine.discountAmount" (change)="calculateItemSum()"
+               name="discountAmount" #discountAmount="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Vergi Ekle</div>
+        <div class="col-12 col-md-6">
+          <input auto-complete [(ngModel)]="selectedTax" [source]="defaultTaxes" [list-formatter]="autocompleteTaxFormatter" name="addTax"
+                   value-property-name="description"
+                   display-property-name="description"
+                   no-match-found-text="Bulunamadı"
+                   placeholder="Vergi"
+                   class="form-control" />
+        </div>
+        <div class="col-12 col-md-2">
+          <button type="button" class="btn btn-success" (click)="addTax()">Ekle</button>
+        </div>
+      </div>
+      <div class="row" *ngFor="let itemqm of invoiceLine['item']['itemTaxes']; let indd=index">
+        <div class="col-6 col-md-4">{{itemqm.taxesType.description}}</div>
+        <div class="col-12 col-md-4">
+          <input class="form-control" name="itemTaxes{{itemqm.value}}" type="number" placeholder="Oran" [(ngModel)]="itemqm.value" (change)="calculateItemSum(ind)"
+                  name="taxDescription" #taxDescription="ngModel" required/>
+        </div>
+        <div class="col-12 col-md-4">
+          <button type="button" class="btn btn-danger" (click)="deleteTax(indd)">Sil</button>
+        </div>
+        <div class="col-6 col-md-4" *ngIf="itemqm.taxesType.code==='0015' && itemqm.value===0">
+          Muafiyet Sebebi
+        </div>
+        <div class="col-12 col-md-8"  *ngIf="itemqm.taxesType.code==='0015' && itemqm.value===0">
+          <input class="form-control" name="exception{{invoiceLine.exceptionReason}}" type="text" placeholder="Muafiyet Sebebi" [(ngModel)]="invoiceLine.exceptionReason"/> 
+        </div>
+                
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Toplam</div>
+        <div class="col-12 col-md-8">
+           {{invoiceLine.price.toFixed(3)}} {{invoice.currency.code}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary confirm-btn" type="submit" (click)="closeModal()" [disabled]="!z.valid">Kaydet</button>
+      </div>
+
+    </form>
+  </div>
+</div>

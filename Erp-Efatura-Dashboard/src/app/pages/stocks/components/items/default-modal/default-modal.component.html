@@ -1,0 +1,118 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Ürün Güncelleme</h4>
+    <h4 *ngIf="!id" class="modal-title">Ürün Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">Ürün Adı</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!itemName.valid && itemName.touched), 'has-success': (itemName.valid && itemName.touched)}">
+          <input class="form-control" type="text" placeholder="Ürün Adı" [(ngModel)]="item.name" name="itemName" #itemName="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4" >Açıklama</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" [(ngModel)]="item.description" placeholder="Açıklama" name="descriptionn"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6 col-md-4">Depolar</div>
+        <div class="col-12 col-md-7" [ngClass]="{'has-error': (!storagee.valid && storagee.touched), 'has-success': (storagee.valid && storagee.touched)}">
+          <input auto-complete [(ngModel)]="selectedStorage" [source]="storages" [list-formatter]="autocompleteStorageFormatter"
+                    value-property-name="name"
+                    display-property-name="name"
+                    no-match-found-text="Bulunamadı"
+                    (valueChanged)="storageChanged($event)"
+                    placeholder="Depo"
+                    class="form-control" name="storagee" #storagee="ngModel"/>
+        </div>
+        <div class="col-12 col-md-1 align-right" title="Yeni Depo Ekle">
+          <button class="btn btn-success" (click)="addStorageModal()"><i class="fa fa-archive"></i>+</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6 col-md-4">Kategoriler</div>
+        <div class="col-12 col-md-7" [ngClass]="{'has-error': (!categoryy.valid && categoryy.touched), 'has-success': (categoryy.valid && categoryy.touched)}">
+          <input auto-complete [(ngModel)]="selectedCategory" [source]="categories" [list-formatter]="autocompleteCategoryFormatter"
+                    value-property-name="description"
+                    display-property-name="description"
+                    no-match-found-text="Bulunamadı"
+                    (valueChanged)="categoryChanged($event)"
+                    placeholder="Kategori"
+                    class="form-control" name="categoryy" #categoryy="ngModel"/>
+        </div>
+        <div class="col-12 col-md-1 align-right" title="Yeni Kategori Ekle">
+          <button class="btn btn-success" (click)="addCategoryModal()"><i class="fa fa-list"></i>+</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Ürün Adedi</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!stockk.valid && stockk.touched), 'has-success': (stockk.valid && stockk.touched)}">
+          <input class="form-control" type="number" placeholder="Ürün Adedi" [(ngModel)]="item.stock" name="stockk" #stockk="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Birim Fiyatı</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!pricee.valid && pricee.touched), 'has-success': (pricee.valid && pricee.touched)}">
+          <input class="form-control" type="number" placeholder="Birim Fiyatı" [(ngModel)]="item.price" name="pricee" #pricee="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Vergiler</div>
+        <div class="col-12 col-md-2">
+          <input class="form-control" type="number" placeholder="Miktar" [(ngModel)]="tax.value" name="taxx"/>
+        </div>
+        <div class="col-12 col-md-5">
+          <select class="form-control" [(ngModel)]="tax.taxesType" name="taxesTypee">
+            <option *ngFor="let itemx of taxesTypes" [ngValue]="itemx">{{itemx.description}}</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-1 align-right"  title="Vergi Ekle">
+          <button class="btn btn-primary" (click)="addTax()">Ekle</button>
+        </div>
+      </div>
+      <div class="row" *ngFor="let itemz of item.itemTaxes; let ind=index">
+        <div class="col-6 col-md-4">Eklenen Vergiler</div>
+        <div class="col-12 col-sm-7">{{itemz.taxesType.description}} : {{itemz.value}}</div>
+        <div class="col-12 col-sm-1  align-right"><button class="btn btn-danger" name="delete{{itemz.taxesType.description}}_{{itemz.value}}" (click)="deleteTax(ind)"><i class="ion-trash-a"></i></button></div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Para Birimi</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!currencyy.valid && currencyy.touched), 'has-success': (currencyy.valid && currencyy.touched)}">
+          <select class="form-control input-sm" [(ngModel)]="item.currency.id" name="currencyy" #currencyy="ngModel" required>
+            <option *ngFor="let itemc of currencies" [ngValue]="itemc.id">{{itemc.description}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Ölçü Birimi</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!uomCode.valid && uomCode.touched), 'has-success': (uomCode.valid && uomCode.touched)}">
+          <select class="form-control input-sm" [(ngModel)]="item.uomCode.id" name="uomCode" #uomCode="ngModel" required>
+            <option *ngFor="let itemv of uomCodes" [ngValue]="itemv.id">{{itemv.description}}</option>
+          </select>
+        </div>
+      </div>
+
+    <div class="row errors">
+      <div class="col-12 col-md-8">
+        <p class="errorText" *ngIf="(!itemName.valid && itemName.touched)">**TC/VKN girmelisiniz</p>
+        <!--<p class="errorText" *ngIf="(!categoryy.valid && categoryy.touched)">**Kategori seçmelisiniz</p>-->
+        <p class="errorText" *ngIf="(!stockk.valid && stockk.touched)">**Ürün adedi bilgisini girmelisiniz</p>
+        <p class="errorText" *ngIf="(!pricee.valid && pricee.touched)">**Birim Fiyatı girmelisiniz</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addItem()" [disabled]="!f.valid">Kaydet</button>
+      <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateItem()" [disabled]="!f.valid">Güncelle</button>
+    </div>
+  </form>
+</div>
+</div>

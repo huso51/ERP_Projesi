@@ -1,0 +1,103 @@
+@import '../../theme/sass/conf/conf';
+:host /deep/ .widgets {
+    .data-table-container {
+        width: 100%;
+        .panel-heading {
+            margin-top: 25px;
+        }
+	}
+	.btn.btn-info.address{
+	background-color: orange;
+}
+.address {
+    background: orange;
+    border-color: orange;
+}
+}
+
+@media only screen and (min-width: 768px) {
+#appellation {
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#appellation:active{
+    overflow: visible; 
+    white-space: normal; 
+    width: auto;
+    position: absolute;
+    background-color: rgba(10, 10, 10, 0.6);
+}
+#appellation:active+div {
+    margin-top:20px;
+}
+}
+
+
+@media only screen and (max-width: 900px) {
+    table {
+        font-size: 0.7em;
+    }
+}
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 300px) and (max-device-width: 760px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+    }
+    .table > tbody > tr > td {
+    padding: 15px 80px;
+    line-height: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .btn-group.btndropdown {
+    position: initial;
+    }
+	.table > tbody > tr > td:first-child {
+    text-align: left;
+    }
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	
+	/*
+	Label the data
+    */
+	td:nth-of-type(1):before { content: "TCKN/VKN"; }
+	td:nth-of-type(2):before { content: "Adı/Ünvanı"; }
+	td:nth-of-type(3):before { content: "Müşteri Çeşidi"; }
+	td:nth-of-type(4):before { content: "Vergi Dairesi"; }
+	td:nth-of-type(5):before { content: "İndirim"; }
+	td:nth-of-type(6):before { content: "Kredi Limiti"; }
+	td:nth-of-type(7):before { content: "Adres"; }
+	td:nth-of-type(8):before { content: "Düzenle"; }
+}

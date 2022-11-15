@@ -1,0 +1,16 @@
+@import '../../theme/sass/auth';
+
+.errormessage{
+    color: rgba(255, 51, 51, 1.0);
+}
+.register {
+    float: right;
+}
+i.forgot-password {
+    padding-left: inherit;
+    color: skyblue;
+}
+a.forgot-password {
+    float: right;
+    padding-right: 5%;
+}

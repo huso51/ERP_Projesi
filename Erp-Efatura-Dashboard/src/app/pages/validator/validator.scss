@@ -1,0 +1,48 @@
+@import '../../theme/sass/auth';
+
+.errormessage{
+    color: rgba(255, 51, 51, 1.0);
+}
+.errormessage{
+    color: rgba(52, 255, 51, 1.0);
+}
+button.btn.btn-warning.btn-register {
+    float: right;
+}
+i.forgot-password {
+    padding-left: inherit;
+    color: skyblue;
+}
+.auth-block{
+    width: 650px;
+    background-color: #262626;
+    color: #efefef;
+}
+.auth-block a {
+    color: goldenrod;
+}
+.auth-block a:hover {
+    color: #DD1B16;
+}
+.btn-auth {
+    background-color: #DD1B16;
+    color: #efefef;
+    float: right;
+}
+.centerDiv{
+    margin: auto;
+    text-align: center;
+}
+button.form-control.info-btn {
+    width: max-content;
+}
+span.pkgb {
+    background: white;
+    color: black;
+    padding: 5px 1px;
+    border-radius: 3px;
+}
+input.form-control.pkgb-input {
+    display: inline-block;
+    width: 89%;
+}

@@ -1,0 +1,330 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id && !isPdf" class="modal-title">Fatura Detayı</h4>
+    <h4 *ngIf="!id && !isPdf" class="modal-title">Fatura Ekleme</h4>
+    <h4 *ngIf="id && isPdf" class="modal-title">Fatura Önizleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="!id && !isPdf && !uuid">
+    <form #f="ngForm">
+    <div class="row">
+      <div class="col-6 col-md-4">Fatura Tipi</div>
+      <div class="col-12 col-md-8">
+        <select class="form-control input-sm" [(ngModel)]="invoice.invoiceType" (change)="checkWithholding()" name="invoiceTypeSelect">
+          <option *ngFor="let item of invoiceTypes" [ngValue]="item">{{item.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.invoiceType">
+      <div class="col-6 col-md-4" *ngIf="invoice.invoiceType.code==='TEVKIFAT'">Tevkifat Oranları</div>
+      <div class="col-12 col-md-8" *ngIf="invoice.invoiceType.code==='TEVKIFAT'">
+        <select class="form-control input-sm" [(ngModel)]="invoice.invoiceWithholding" name="invoiceWithholding">
+          <option *ngFor="let item of invoiceWithholdings" [ngValue]="item">{{item.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.invoiceType">
+      <div class="col-6 col-md-4" *ngIf="invoice.invoiceType.code==='ISTISNA'">İstisna Çeşidi</div>
+      <div class="col-12 col-md-8" *ngIf="invoice.invoiceType.code==='ISTISNA'">
+        <select class="form-control input-sm" [(ngModel)]="invoice.invoiceException" name="invoiceException">
+          <option *ngFor="let item of invoiceExceptions" [ngValue]="item">{{item.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Müşteri Seç</div>
+      <div class="col-12 col-md-7" [ngClass]="{'has-error': (!customer.valid && customer.touched), 'has-success': (customer.valid && customer.touched)}">
+        <input auto-complete [(ngModel)]="name" [source]="customers" [list-formatter]="autocompleteListFormatter" name="customer" #customer="ngModel"
+                    display-property-name="name"
+                   value-property-name="appellation"
+                   no-match-found-text="Bulunamadı"
+                   (valueChanged)="customerChanged($event)"
+                   placeholder="Müşteriler"
+                   class="form-control" required/>
+      </div>
+      <div class="col-12 col-md-1">
+        <button class="btn btn-success" (click)="addCustomerModal()">+</button>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.customer.address[0]">
+      <div class="col-6 col-md-4">Adres Bilgisi</div>
+      <div class="col-6 col-md-3"><b>İl</b><p>{{invoice.customer.address[0].city.name}}</p></div>
+      <div class="col-6 col-md-3"><b>İlçe</b><p>{{invoice.customer.address[0].district.name}}</p></div>
+      <div class="col-6 col-md-3"><b>Mahalle</b><p>{{invoice.customer.address[0].neighborhood.name}}</p></div>
+      <div class="col-6 col-md-3"><b>Posta Kodu</b><p>{{invoice.customer.address[0].neighborhood.postCode}}</p></div>
+      <div class="col-6 col-md-3"><b>Email</b><p>{{invoice.customer.address[0].email}}</p></div>
+      <div class="col-6 col-md-3"><b>Fax</b><p>{{invoice.customer.address[0].fax}}</p></div>
+      <div class="col-6 col-md-3"><b>Tam Adres</b><p>{{invoice.customer.address[0].fullAddress}}</p></div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Sipariş No</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" name="orderNo" type="text" placeholder="Sipariş No" [(ngModel)]="invoice.orderNo" ngModel/>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.orderNo">
+      <div class="col-6 col-md-4">Sipariş Tarihi</div>
+      <div class="col-12 col-md-8">
+        <my-date-picker name="mydate" [options]="myDatePickerOptions" [selector]="dateSelector" (click)="openCalendar()"
+                    [(ngModel)]="orderDate" required></my-date-picker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">İrsaliye Numarası</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" name="walbillNumber" type="text" placeholder="İrsaliye Numarası" [(ngModel)]="invoice.waybillNumber"/>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.waybillNumber">
+      <div class="col-6 col-md-4">İrsaliye Tarihi</div>
+      <div class="col-12 col-md-8">
+        
+        <my-date-picker name="waybillDate" [options]="myDatePickerOptions" [selector]="dateSelector" (click)="openCalendar()"
+                    [(ngModel)]="waybillDate" required></my-date-picker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Para Birimi</div>
+      <div class="col-12 col-md-8">
+        <select class="form-control input-sm" [(ngModel)]="invoice.currency" name="currency">
+          <option *ngFor="let item of currencies" [ngValue]="item">{{item.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Açıklama</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" name="description" type="text" placeholder="Açıklama" [(ngModel)]="invoice.description"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Fatura Tarihi</div>
+      <div class="col-12 col-md-8">
+        <my-date-picker name="myInvoicedate" [options]="myDatePickerOptions" [selector]="dateSelector" (click)="openCalendar()"
+                    [(ngModel)]="createdAt" required></my-date-picker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Seri No</div>
+      <div class="col-12 col-md-4" [ngClass]="{'has-error': (!seri.valid && seri.touched), 'has-success': (seri.valid && seri.touched)}">
+        <input class="form-control" style="text-transform:uppercase;" #seri="ngModel" name="seri" type="text" placeholder="Seri" [(ngModel)]="invoice.sn1" maxlength="5" minlength="1" required/>
+      </div>
+      <div class="col-12 col-md-4" [ngClass]="{'has-error': (!siraNo.valid && siraNo.touched), 'has-success': (siraNo.valid && siraNo.touched)}">
+        <input class="form-control" #siraNo="ngModel" name="siraNo" type="text" placeholder="Sıra No" [(ngModel)]="invoice.sn2" maxlength="20" minlength="4" required/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Ürün Ekle</div>
+      <div class="col-12 col-md-4">
+        <input auto-complete [(ngModel)]="selectedItem" [source]="items" [list-formatter]="autocompleteItemFormatter" name="selectedItem" #selectedItemm="ngModel"
+                   value-property-name="name"
+                   no-match-found-text="Bulunamadı"
+                   display-property-name="name"
+                   placeholder="Ürün"
+                   class="form-control" />
+      </div>
+      <div class="col-12 col-md-1">
+        <button class="btn btn-success" (click)="addItemModal()">+</button>
+      </div>
+      <div class="col-12 col-md-2">
+        <input class="form-control" name="quantity" type="number" placeholder="Birim" [(ngModel)]="quantity"/>
+      </div>
+      <div class="col-12 col-md-1">
+        <button class="btn btn-success" (click)="addItemtoLine()">Ekle</button>
+      </div>
+    </div>
+    <div class="row urun" >
+      <div class="horizontal-scroll">
+        <table class="table table-hover">
+          <thead>
+          <tr class="black-muted-bg">
+            <th class="align-left first-th"><b>Adı</b></th>
+            <th class="align-left"><b>Adet</b></th>
+            <th class="align-left"><b>Fiyat</b></th>
+            <th class="align-left"><b>İndirim</b></th>
+            <th class="align-left"><b>Vergiler</b></th>
+            <th class="align-left"><b>Toplam</b></th>
+            <th class="align-left"></th>
+            <th class="align-right"><b></b></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let itemq of invoice.invoiceLine; let ind=index" class="no-top-border">
+            <td class="align-left">{{itemq.item.name}}</td>
+            <td class="align-left">{{itemq.quantity}}</td>
+            <td class="align-left">{{itemq.item.price}}</td>
+            <td class="align-left">{{invoice.invoiceLine[ind].discountAmount}}</td>
+            <td class="align-left"><span *ngFor="let itemqm of itemq['item']['itemTaxes']; let indd=index">
+                                    <strong>{{itemqm.taxesType.description}}:</strong>{{itemqm.value}}% </span></td>
+            <td class="align-left">{{invoice.invoiceLine[ind].price.toFixed(3)}}</td>
+            <td class="align-left">{{invoice.currency.code}}</td>
+            <td class="align-right">
+              <button class="btn btn-success" (click)="customizeItemFromLine(ind)"><i class="ion-edit"></i></button>
+              <button class="btn btn-danger" (click)="deleteItemFromLine(ind)"><i class="ion-trash-a"></i></button>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-8">
+      <p class="errorText" *ngIf="(!customer.valid && customer.touched)">**Müşteri Seçimi yapmalısınız</p>
+      <p class="errorText" *ngIf="(!seri.valid && seri.touched)">**'Seri' en az 1 karakter girmelisiniz</p>
+      <p class="errorText" *ngIf="(!siraNo.valid && siraNo.touched)">**'Sıra No' en az 4 hane girmelisiniz</p>
+      <p class="errorText" *ngIf="(invoice.invoiceLine?.length<1 && selectedItemm.touched)">**Lütfen en az 1 ürün ekleyin.</p>
+    </div>
+
+  <div class="modal-footer">
+    <div class="col-12 col-md-2">
+        <b>Toplam</b> <p>{{invoice.subTotal.toFixed(3)}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>İndirimli Toplam</b> <p>{{invoice.grossTotal.toFixed(3)}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>Toplam İndirim</b> <p>{{invoice.discountTotal.toFixed(3)}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>Toplam Vergi</b> <p>{{invoice.taxesTotal.toFixed(3)}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>Genel Toplam</b> <p>{{invoice.priceTotal.toFixed(3)}} {{invoice.currency.code}}</p>
+    </div>
+    <button *ngIf="!id && !isPdf" class="btn btn-primary confirm-btn" (click)="addInvoice()" [disabled]="!f.valid || invoice.invoiceLine?.length<1">Kaydet</button>
+  </div>
+  </form>
+</div>
+
+
+<!-- End of Footer1 -->
+
+  <div class="modal-body" *ngIf="(id && !isPdf && !uuid)">
+    <div class="row">
+      <div class="col-6 col-md-4">Fatura Tipi</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.invoiceType.description}}</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.invoiceType.code === 'TEVKIFAT'">
+      <div class="col-6 col-md-4">Tevkifat Oranı</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.invoiceWithholding.description}}</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.invoiceType.code === 'ISTISNA'">
+      <div class="col-6 col-md-4">İstisna Çeşidi</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.invoiceException.description}}</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Müşteri Adı</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.customer.name}} {{invoice.customer.surname}}</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.customer.address[0]">
+      <div class="col-6 col-md-4">Adres Bilgisi</div>
+      <div class="col-6 col-md-3"><b>İl</b><p>{{invoice.customer.address[0].city.name}}</p></div>
+      <div class="col-6 col-md-3"><b>İlçe</b><p>{{invoice.customer.address[0].district.name}}</p></div>
+      <div class="col-6 col-md-3"><b>Mahalle</b><p>{{invoice.customer.address[0].neighborhood.name}}</p></div>
+      <div class="col-6 col-md-3"><b>Posta Kodu</b><p>{{invoice.customer.address[0].neighborhood.postCode}}</p></div>
+      <div class="col-6 col-md-3"><b>Email</b><p>{{invoice.customer.address[0].email}}</p></div>
+      <div class="col-6 col-md-3"><b>Fax</b><p>{{invoice.customer.address[0].fax}}</p></div>
+      <div class="col-6 col-md-3"><b>Tam Adres</b><p>{{invoice.customer.address[0].fullAddress}}</p></div>
+    </div>
+    <div class="row" *ngIf="invoice.orderNo">
+      <div class="col-6 col-md-4">Sipariş No</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.orderNo}}</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.orderDate">
+      <div class="col-6 col-md-4">Sipariş Tarihi</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.orderDate}}</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.waybillNumber">
+      <div class="col-6 col-md-4">İrsaliye Numarası</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.waybillNumber}}</label>
+      </div>
+    </div>
+    <div class="row" *ngIf="invoice.waybillDate">
+      <div class="col-6 col-md-4">İrsaliye Tarihi</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.waybillDate}}</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Seri No</div>
+      <div class="col-12 col-md-4">
+        <label class="col-sm-12 label-control">{{invoice.sn1}}{{invoice.sn2}}{{invoice.sn3}}</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Açıklama</div>
+      <div class="col-12 col-md-8">
+        <label class="col-sm-12 label-control">{{invoice.description}}</label>
+      </div>
+    </div>
+    <div class="row urun" >
+      <div class="horizontal-scroll">
+        <table class="table table-hover">
+          <thead>
+          <tr class="black-muted-bg">
+            <th><b>Adı</b></th>
+            <th class="align-left"><b>Adet</b></th>
+            <th class="align-left"><b>Fiyat</b></th>
+            <th class="align-left"><b>İndirim</b></th>
+            <th class="align-left"><b>Vergiler</b></th>
+            <th class="align-left"><b>Toplam</b></th>
+            <th class="align-left"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let itemq of invoice.invoiceLine; let ind=index" class="no-top-border">
+            <td class="align-left">{{itemq.item.name}}</td>
+            <td class="align-left">{{itemq.quantity}}</td>
+            <td class="align-left">{{itemq.item.price}}</td>
+            <td class="align-left">{{invoice.invoiceLine[ind].discountAmount}}</td>
+            <td class="align-left"><span *ngFor="let itemqm of itemq['item']['itemTaxes']; let indd=index">
+                                    <strong>{{itemqm.taxesType.description}}:</strong>{{itemqm.value}}% </span></td>
+            <td class="align-left">{{invoice.invoiceLine[ind].price.toFixed(3)}}</td>
+            <td class="align-left">{{invoice.currency.code}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+
+  <div class="modal-footer">
+    <div class="col-12 col-md-2">
+        <b>Toplam</b> <p>{{invoice.subTotal}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>İndirimli Toplam</b> <p>{{invoice.grossTotal}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>Toplam İndirim</b> <p>{{invoice.discountTotal}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>Toplam Vergi</b> <p>{{invoice.taxesTotal}} {{invoice.currency.code}}</p>
+    </div>
+    <div class="col-12 col-md-2">
+        <b>GenelToplam</b> <p>{{invoice.priceTotal}} {{invoice.currency.code}}</p>
+    </div>
+    <button *ngIf="!id && !isPdf" class="btn btn-primary confirm-btn" (click)="addInvoice()">Kaydet</button>
+  </div>
+</div>
+
+<!-- End of Footer2 -->
+<div *ngIf="isPdf || uuid" class="e2e-trusted-url" [innerHTML]="invoiceHtml"></div>
+
+</div>

@@ -1,0 +1,229 @@
+<div class="widgets">
+    <switch *ngIf="user.tenantUsers.tenant.tenantInfo.isEfaturaUser" status="true" onText="ERP" offText="Efatura" onColor="blue" offColor="green" size="large" (click)="changeisEfatura()"></switch>
+    <div class="row" *ngIf="isEfatura==='ERP'">
+        <ba-card title="Fatura Arama" baCardClass="" class="data-table-container">
+            <div class="row">
+                
+            </div>
+            <div class="row">
+                <div class="col-md-2" title="Müşteri Adı">
+                    <label class="label-control">MüşteriAdı</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchCustomer" (keyup.enter)="search()" type="text" placeholder="Müşteri Adı"/>
+                </div>
+                <div class="col-md-1" title="Satır Sayısı">
+                    <label class="label-control">SatırSayısı</label>
+                    <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="200" step="20" />
+                </div>
+                <div class="col-md-1" title="Sayfa">
+                    <label class="label-control">Sayfa</label>
+                    <input class="form-control input-sm" [(ngModel)]="offset" (keyup.enter)="search()" type="number" min="0" step="20" />
+                </div>
+                <div class="col-md-2" title="Ölçütler">
+                    <label class="col-sm-12 label-control">Ölçütler</label>
+                    <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderSelect">
+                        <option ngValue="c.name">Müşteri Adı</option>
+                        <option ngValue="iv.created_at">Fatura Tarihi</option>
+                        <option ngValue="iv.confirmed">Aktif/Pasif</option>
+                        <option ngValue="iv.price_total">Fatura Tutarı</option>
+                    </select>
+                </div>
+                <div class="col-md-2" title="Sıralama">
+                  <label class="col-sm-12 label-control">Sıralama</label>
+                   <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderBy">
+                       <option ngValue="asc">Artan</option>
+                        <option ngValue="desc">Azalan</option>
+                   </select>
+                </div>
+                <div class="col-md-2" title="İlk Tarih">
+                  <label class="col-sm-12 label-control">İlk</label>
+                  
+                  <my-date-picker name="mydate1" [options]="myDatePickerOptions" [selector]="dateSelector1" (click)="openCalendar1()" (dateChanged)="onDateChanged($event)"
+                    [(ngModel)]="searchFirstDate" required></my-date-picker>
+                </div>
+                <div class="col-md-2" title="Son Tarih">
+                  <label class="col-sm-12 label-control">Son</label>
+                  
+                  <my-date-picker name="mydate2" [options]="myDatePickerOptions" [selector]="dateSelector2" (click)="openCalendar2()" (dateChanged)="onDateChanged($event)"
+                    [(ngModel)]="searchLastDate" required></my-date-picker>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div id="search-button" class="col-sm-4" title="Ara">
+                    <button class="btn btn-success" (click)="search()"><i class="fa fa-refresh"></i> Ara</button>
+                </div>
+                <div *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                        
+                        <div class="btn-group" title="Çoklu İşlem">
+                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"><i class="ion-gear-b"></i>Çoklu İşlem</button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-header"><b>Seçili olanları</b></li>
+                                        <li class="dropdown-item"><a (click)="sendSelecteds('liste')"><i class="ion-paper-airplane"></i> Gönder</a></li>
+                                        <li class="dropdown-item"><a (click)="downloadPdf('liste')"><i class="ion-android-download"></i> İndir</a></li>
+                                        <li class="dropdown-item"><a (click)="emailSelecteds('liste')"><i class="ion-email"></i> Mail Gönder</a></li>
+                                        <li class="dropdown-item"><a (click)="deleteSelecteds('liste')"><i class="ion-trash-a"></i> İptal Et</a></li>
+                                    </ul>
+                        </div>
+                        <button title="Yeni Fatura" class="btn btn-info" (click)="addCustomer()">Yeni Fatura</button>
+                </div>
+                
+                
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Fatura Bilgileri">Fatura Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="Seç">Seç</th>
+                            <th title="SeriNo">SeriNo</th>
+                            <th title="M.Adı/Ünvanı">M.Adı/Ünvanı</th>
+                            <th title="Fatura Tipi">Fatura Tipi</th>
+                            <th title="Fatura Tutarı">Fatura Tutarı</th>
+                            <th title="Para Birimi">Para Birimi</th>
+                            <th title="İşlemler" class="align-right">İşlemler</th>
+
+                            <!-- <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody class="erp">
+                        <tr *ngFor="let item of invoices; let ind=index">
+                            <td title="Seç"><input class="form-control" type="checkbox" [(ngModel)]="invoices[ind].isChecked"/></td>
+                            <td title="{{item.sn1}}{{item.sn2}}{{item.sn3}}">{{item.sn1}}{{item.sn2}}{{item.sn3}}</td>
+                            <td title="{{item.customer.name}} {{item.customer.surname}}" *ngIf="!item.customer.appellation" class="long-text">{{item.customer.name}} {{item.customer.surname}}</td>
+                            <td title="{{item.customer.appellation}}" *ngIf="item.customer.appellation" class="long-text">{{item.customer.appellation}}</td>
+                            <td title="{{item.invoiceType.description}}">{{item.invoiceType.description}}</td>
+                            <td title="{{item.priceTotal}}">{{item.priceTotal}}</td>
+                            <td title="{{item.currency.description}}">{{item.currency.description}}</td>
+                            <td class="align-right">
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button"><i class="ion-gear-b"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="showInvoice(ind)">Göster</a></li>
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="showInvoiceHtml(ind)">Önizleme</a></li>
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="downloadPdf(ind)">İndir</a></li>
+                                        <li class="dropdown-item"><a *ngIf="(user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w') && item.receiverIdentifier" (click)="sendSelecteds(ind)">E-Fatura Gönder</a></li>
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="emailSelecteds(ind)">Mail Gönder</a></li>
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="deleteSelecteds(ind)">İptal Et</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                            <!-- <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </ba-card>
+    </div>
+
+
+
+    <!-- ***** EFatura ****** -->
+
+    <div class="row" *ngIf="isEfatura==='EFatura'">
+        <ba-card title="Fatura Arama" baCardClass="" class="data-table-container">
+            <div class="row">
+                
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                  <label class="col-sm-12 label-control" title="İlk Tarih">İlk</label>
+                  
+                  <my-date-picker name="mydate1" [options]="myDatePickerOptions" [selector]="dateSelector1" (click)="openCalendar1()" (dateChanged)="onDateChanged($event)"
+                    [(ngModel)]="searchFirstDate" required></my-date-picker>
+                </div>
+                <div class="col-md-2" title="Son Tarih">
+                  <label class="col-sm-12 label-control">Son</label>
+                  
+                  <my-date-picker name="mydate2" [options]="myDatePickerOptions" [selector]="dateSelector2" (click)="openCalendar2()" (dateChanged)="onDateChanged($event)"
+                    [(ngModel)]="searchLastDate" required></my-date-picker>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div title="Ara" id="search-button" class="col-sm-4">
+                    <button class="btn btn-success" (click)="getOutbox()"><i class="fa fa-refresh"></i> Ara</button>
+                </div>
+                <div *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                        
+                        <div title="İşlemler" class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"><i class="ion-gear-b"></i>İşlemler</button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-header"><b>Seçili olanları</b></li>
+                                        <li class="dropdown-item"><a (click)="sendSelecteds('liste')"><i class="ion-trash-a"></i>Gönder</a></li>
+                                        <li class="dropdown-item"><a (click)="downloadPdf('liste')"><i class="ion-android-download"></i>İndir</a></li>
+                                        <li class="dropdown-item"><a (click)="emailSelecteds('liste')"><i class="ion-paper-airplane"></i>Mail Gönder</a></li>
+                                        <li class="dropdown-item"><a (click)="deleteSelecteds('liste')"><i class="ion-trash-a"></i>İptal Et</a></li>
+                                    </ul>
+                        </div>
+                </div>
+                
+                
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Fatura Bilgileri">Fatura Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="SeriNo">SeriNo</th>
+                            <th title="Senaryo">Senaryo</th>
+                            <th title="Fatura Tipi">Fatura Tipi</th>
+                            <th title="VKN">VKN</th>
+                            <th title="Ünvan">Ünvan</th>
+                            <th title="Fatura Tutarı">Fatura Tutarı</th>
+                            <th title="Para Birimi">Para Birimi</th>
+                            <th title="Durum">Durum</th>
+                            <th title="Tarih">Tarih</th>
+                            <th title="İşlemler" class="align-right">İşlemler</th>
+
+                            <!-- <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody class="efatura">
+                        <tr *ngFor="let item of gibOutbox; let ind=index">
+                            <td title="{{item.invoiceId}}">{{item.invoiceId}}</td>
+                            <td title="{{item.profile}}">{{item.profile}}</td>
+                            <td title="{{item.typeCode}}" class="smalltd">{{item.typeCode}}</td>
+                            <td title="{{item.partyId}}">{{item.partyId}}</td>
+                            <td title="{{item.partyName}}" class="long-text">{{item.partyName}}</td>
+                            <td title="{{item.payableAmount}}">{{item.payableAmount}}</td>
+                            <td title="{{item.currency}}" class="smalltd">{{item.currency}}</td>
+                            <td title="{{item.status}}" *ngIf="!item.applicationResponse">{{item.status}}</td>
+                            <td title="{{item.applicationResponse}}" *ngIf="item.applicationResponse">{{item.applicationResponse}}</td>
+                            <td title="{{item.envelopeDate}}">{{item.envelopeDate}}</td>
+                            <td class="align-right">
+                                <div title="İşlemler" class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button"><i class="ion-gear-b"></i></button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="showGibHtml(ind)">Göster</a></li>
+                                        <li class="dropdown-item"><a *ngIf="user.tenantUsers.userRole.invoice=='a' || user.tenantUsers.userRole.invoice=='w'" (click)="sendResponseGib('IPTAL', ind)">İptal</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <!-- <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="11">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </ba-card>
+    </div>
+
+</div>
+  <!-- <div class="e2e-trusted-url" [innerHTML]="invoiceHtml">
+      </div> -->

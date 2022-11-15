@@ -1,0 +1,87 @@
+@import "../../../../../theme/sass/conf/conf";
+.modal-buttons .btn {
+  margin-right: 20px;
+}
+.horizontal-scroll{
+  margin: auto;
+  width: stretch;
+}
+.align-left{
+  align-self: left;
+  text-align: left;
+}
+.table > thead > tr > th:first-child {
+    text-align: left;
+}
+.table > tbody > tr > td:first-child {
+    text-align: left;
+}
+.table > thead > tr{
+  text-align: left;
+}
+.e2e-trusted-url{
+  background-color: white;
+  margin: auto;
+}
+.errorText{
+  color: red;
+}
+.modal-content {
+  color: black;
+  background-color:  rgba(230, 230, 230, 0.9);
+}
+.form-control{
+  color: black;
+  background-color: white;
+}
+#image-row{
+  background-color:  rgba(230, 230, 230, 0.9);
+}
+.col-sm-3{
+  margin: auto;
+  max-width: 100%;
+}
+img{
+  width: 150px;
+  height: 150px;
+}
+.row{
+  background-color: white;
+}
+.row.urun{
+  background-color: rgba(140, 200, 255, 0.7);
+}
+.col-6.col-md-4{
+  background-color:  #292b2c;
+  color:white;
+}
+.col-6.col-md-2{
+  background-color:  rgba(86, 47, 47, 0.9);
+  color:white;
+}
+.col-12.col-sm-2.itemname{
+  white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     max-width: 200px;
+}
+
+
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #444;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #444;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #444;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #444;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #444;
+}

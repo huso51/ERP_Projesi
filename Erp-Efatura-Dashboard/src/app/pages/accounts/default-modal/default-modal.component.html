@@ -1,0 +1,129 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id && type==='account'" class="modal-title">Hesap Güncelleme</h4>
+    <h4 *ngIf="!id && type==='account'" class="modal-title">Hesap Ekleme</h4>
+    <h4 *ngIf="type==='transfer'" class="modal-title">Bakiye Transferi</h4>
+    <h4 *ngIf="type==='addmoney'" class="modal-title">Bakiye Ekle/Çıkar</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- ACCOUNT START -->
+  <div *ngIf="type==='account'" class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">Hesap Numarası</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!accountNo.valid && accountNo.touched), 'has-success': (accountNo.valid && accountNo.touched)}">
+          <input class="form-control" type="text" placeholder="Hesap Numarası" [(ngModel)]="account.no" 
+             minlength="2" name="accountNo" #accountNo="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Adı</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!accountName.valid && accountName.touched), 'has-success': (accountName.valid && accountName.touched)}">
+          <input class="form-control" type="text" placeholder="Hesap Adı" [(ngModel)]="account.name" 
+             minlength="2" name="accountName" #accountName="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!accountDescription.valid && accountDescription.touched), 'has-success': (accountDescription.valid && accountDescription.touched)}">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="account.description" 
+               minlength="2" name="accountDescription" #accountDescription="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-6 col-md-4">Bakiye</div>
+          <div class="col-12 col-md-8">
+            <input class="form-control" type="number" placeholder="Bakiye" [(ngModel)]="account.amount" name="accountAmount" #accountAmount="ngModel" required/>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addAccount()" [disabled]="!f.valid">Kaydet</button>
+        <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateAccount()" [disabled]="!f.valid">Güncelle</button>
+      </div>
+
+      <div class="row errors">
+        <div class="col-12 col-md-8">
+          <p class="errorText" *ngIf="(!accountName.valid && accountName.touched)">**Hesap adı girmelisiniz</p>
+          <p class="errorText" *ngIf="(!accountDescription.valid && accountDescription.touched)">**Hesap açıklama girmelisiniz</p>
+        </div>
+    </div>
+
+    </form>
+  </div>
+  <!-- ACCOUNT END -->
+
+  <!-- TRANSFER START -->
+  <div *ngIf="type==='transfer'" class="modal-body">
+      <form #f="ngForm">
+        <div class="row">
+          <div class="col-6 col-md-4">Gönderen</div>
+          <div class="col-12 col-md-8">
+            <select class="form-control" name="sender" id="sender" [(ngModel)]="senderAccount" [compareWith]="customCompare">
+              <option [ngValue]="tempAccount" selected disabled>Gönderici Hesap Seçiniz</option>
+              <option *ngFor="let item of accounts; let ind=index" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 col-md-4">Alıcı</div>
+          <div class="col-12 col-md-8">
+            <select class="form-control" name="receiver" id="receiver" [(ngModel)]="receiverAccount" [compareWith]="customCompare">
+              <option [ngValue]="tempAccount" selected disabled>Alıcı Hesap Seçiniz</option>
+              <option *ngFor="let item of accounts; let ind=index" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-4">Bakiye</div>
+            <div class="col-12 col-md-8">
+              <input class="form-control" type="number" placeholder="Bakiye" [(ngModel)]="amount" name="accountAmount" #accountAmount="ngModel" required/>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary confirm-btn" (click)="transferMoney()" [disabled]="!f.valid">Gönder</button>
+        </div>
+  
+        <div class="row errors">
+          <div class="col-12 col-md-8">
+            <!--<p class="errorText" *ngIf="(!accountName.valid && accountName.touched)">**Hesap adı girmelisiniz</p>-->
+          </div>
+      </div>
+  
+      </form>
+    </div>
+  <!-- TRANSFER END -->  
+
+    <!-- ADDMONEY START -->
+  <div *ngIf="type==='addmoney'" class="modal-body">
+      <form #f="ngForm">
+        <div class="row">
+          <div class="col-6 col-md-4">Hesap</div>
+          <div class="col-12 col-md-8">
+            <select class="form-control" name="account" id="account" [(ngModel)]="senderAccount" [compareWith]="customCompare">
+              <option [ngValue]="tempAccount" selected disabled>Hesap Seçiniz</option>
+              <option *ngFor="let item of accounts; let ind=index" [ngValue]="item">{{item.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-4">Bakiye</div>
+            <div class="col-12 col-md-8">
+              <input class="form-control" type="number" placeholder="Bakiye" [(ngModel)]="amount" name="accountAmount" #accountAmount="ngModel" required/>
+            </div>
+          </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary confirm-btn" (click)="addMoney()" [disabled]="!f.valid">Gönder</button>
+        </div>
+  
+        <div class="row errors">
+          <div class="col-12 col-md-8">
+            <!--<p class="errorText" *ngIf="(!accountName.valid && accountName.touched)">**Hesap adı girmelisiniz</p>-->
+          </div>
+      </div>
+  
+      </form>
+    </div>
+  <!-- ADDMONEY END --> 
+</div>

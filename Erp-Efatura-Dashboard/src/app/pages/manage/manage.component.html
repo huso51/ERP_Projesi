@@ -1,0 +1,63 @@
+<div class="widgets">
+  
+    <div class="row">
+        <div title="Üyelik İstekleri" class="card data-table-container">
+            <div class="row">
+                <div id="search-button" class="col-md-1" title="Ara">
+                        <button class="btn btn-success" (click)="search()"><i class="fa fa-refresh"></i></button>
+                </div>
+                <div class="col-md-1" title="Satır Sayısı">
+                        <label class="label-control">SatırSayısı</label>
+                        <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="200" step="20" />
+                    </div>
+                    <div class="col-md-1" title="Sayfa">
+                        <label class="label-control">Sayfa</label>
+                        <input class="form-control input-sm" [(ngModel)]="offset" (keyup.enter)="search()" type="number" min="0"  step="1" />
+                    </div>
+                    <div class="col-md-2" title="Ölçütler">
+                        <label class="col-sm-12 label-control">Ölçütler</label>
+                        <select class="form-control input-sm" (change)="search()" [(ngModel)]="isAccepted">
+                            <option value="true">Onaylı</option>
+                            <option value="false" selected>Onaysız</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Üyelik İstek Listesi">Üyelik İstek Listesi</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="Organizasyon">Organizasyon</th>
+                            <th title="İstek Süresi">İstek Süresi</th>
+                            <th title="Açıklama">Açıklama</th>
+                            <th title="Üst Organizasyon">Üst Organizasyon</th>
+                            <th title="Tarih">Tarih</th>
+                            <th title="İşlemler" class="align-right">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of expireRequests; let ind=index">
+                            <td title="{{item.tenantName}}">{{item.tenantName}}</td>
+                            <td title="{{item.amount}}">{{item.amount}}</td>
+                            <td title="{{item.description}}">{{item.description}}</td>
+                            <td title="{{item.ownerName}}">{{item.ownerName}}</td>
+                            <td title="{{item.createdAt}}">{{item.createdAt}}</td>
+                            <td title="" class="align-right">
+                                <button *ngIf="!item.confirmed" title="Aktif/Pasif" (click)="changeRequestStatus(ind)" [ngClass]="!item.confirmed ? 'btn btn-success' : 'btn btn-danger'">
+                                    <i [ngClass]="!item.confirmed ? 'ion-checkmark-round' : 'ion-close-round'"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="11">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

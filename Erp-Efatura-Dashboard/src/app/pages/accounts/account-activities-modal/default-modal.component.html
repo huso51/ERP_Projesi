@@ -1,0 +1,76 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Hesap Hareketleri</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+   
+      <div class="row">
+
+        <div class="col-md-2" title="Satır Sayısı">
+          <label class="label-control">SatırSayısı</label>
+          <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="getSpendingType()" (change)="getSpendingType()" type="number" min="0" max="200" step="20"
+          />
+        </div>
+        <div class="col-md-2" title="Sayfa">
+          <label class="label-control">Sayfa</label>
+          <input class="form-control input-sm" [(ngModel)]="offset" (keyup.enter)="getSpendingType()" (change)="getSpendingType()" type="number" min="0" step="1" />
+        </div>
+      </div>
+      <div id="contentToConvert" class="row">
+        <div class="horizontal-scroll center">
+          <table class="table table-hover">
+            <thead>
+              <tr class="black-muted-bg">
+                <th class="align-left first-th">
+                  <b>K.Adı</b>
+                </th>
+                <th class="align-left">
+                  <b>İşlem Türü</b>
+                </th>
+                <th class="align-left">
+                  <b>Tutar</b>
+                </th>
+                <th class="align-left">
+                  <b>Açıklama</b>
+                </th>
+                <th class="align-left">
+                  <b>Tarih</b>
+                </th>
+                <th class="align-left">
+                  <b>Hesap Tutarı</b>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itemq of accountActivities; let ind=index" class="no-top-border">
+                <td class="align-left">{{itemq.user.name}}</td>
+                <td class="align-left">{{itemq.process}}</td>
+                <td class="align-left">{{itemq.debt>0 ? itemq.debt: itemq.receivable}}</td>
+                <td class="align-left">{{itemq.description}}</td>
+                <td class="align-left">{{itemq.createdAt}}</td>
+                <td class="align-left">{{itemq.remaining}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8">
+       
+        </div>
+         -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="captureScreen()"><i class="ion-android-download"></i> Pdf</button>
+        <!--
+          <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addSpendingType()" [disabled]="!f.valid">Kaydet</button>
+        <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateSpendingType()" [disabled]="!f.valid">Güncelle</button>
+        -->
+      </div>
+
+
+  </div>
+</div>

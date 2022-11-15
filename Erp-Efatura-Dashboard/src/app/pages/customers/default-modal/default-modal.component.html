@@ -1,0 +1,165 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Cari Güncelleme</h4>
+    <h4 *ngIf="!id" class="modal-title">Cari Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">TCKN/VKN</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!tcVkn.valid && tcVkn.touched), 'has-success': (tcVkn.valid && tcVkn.touched)}">
+          <input class="form-control" type="text" placeholder="TCKN/VKN" [(ngModel)]="customer.tc" minlength="10" maxlength="11" name="tcVkn" (input)="checkGibUser()" #tcVkn="ngModel" required/>
+        </div>
+      </div>
+      <div class="row" *ngIf="customer.tc">
+        <div class="col-6 col-md-4" *ngIf="customer.tc.length==11">Adı</div>
+        <div class="col-12 col-md-8" *ngIf="customer.tc.length==11" [ngClass]="{'has-error': (!customername.valid && customername.touched), 'has-success': (customername.valid && customername.touched)}">
+          <input class="form-control" type="text" placeholder="Müşteri Adı" [(ngModel)]="customer.name" minlength="2" name="customername" #customername="ngModel" required/>
+        </div>
+      </div>
+      <div class="row" *ngIf="customer.tc">
+        <div class="col-6 col-md-4" *ngIf="customer.tc.length==11">Soyadı</div>
+        <div class="col-12 col-md-8" *ngIf="customer.tc.length==11" [ngClass]="{'has-error': (!surname.valid && surname.touched), 'has-success': (surname.valid && surname.touched)}">
+          <input class="form-control" type="text" placeholder="Müşteri Soyadı" [(ngModel)]="customer.surname" minlength="2" name="surname" #surname="ngModel" required/>
+        </div>
+      </div>
+      <div class="row" *ngIf="customer.tc">
+        <div class="col-6 col-md-4" *ngIf="customer.tc.length==10">Ünvanı</div>
+        <div class="col-12 col-md-8" *ngIf="customer.tc.length==10" [ngClass]="{'has-error': (!appellation.valid && appellation.touched), 'has-success': (appellation.valid && appellation.touched)}">
+          <input class="form-control" type="text" placeholder="Ünvan" [(ngModel)]="customer.appellation" name="appellation" #appellation="ngModel" required/>
+        </div>
+      </div>
+      <div class="row" *ngIf="customer.tc">
+        <div class="col-6 col-md-4" *ngIf="customer.tc.length==10">Tam Ünvanı</div>
+        <div class="col-12 col-md-8" *ngIf="customer.tc.length==10" [ngClass]="{'has-error': (!fullAppellation.valid && fullAppellation.touched), 'has-success': (fullAppellation.valid && fullAppellation.touched)}">
+          <input class="form-control" type="text" placeholder="Tam Ünvan" [(ngModel)]="customer.fullAppellation" name="fullAppellation" #fullAppellation="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">T. Sicil No</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="number" placeholder="Ticari Sicil No" [(ngModel)]="customer.tradeRegisterNumber" name="tradeRegisterNumber"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Mersis No</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="number" placeholder="Mersis No" [(ngModel)]="customer.mersisNumber" name="mersisNumber"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">İndirim</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="number" placeholder="İndirim" [(ngModel)]="customer.basicDiscount" name="basicDiscount"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Borç/Alacak</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="number" placeholder="Borç/Alacak" [(ngModel)]="customer.remainder" name="remainder"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Kredi Limiti</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="number" placeholder="Kredi Limiti" [(ngModel)]="customer.creditLimit" name="creditLimit"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Vergi Dairesi</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Vergi Dairesi" [(ngModel)]="customer.taxAdministration" name="taxAdministration"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Onay</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="customer.isAssent" name="isAssent">
+            <option [ngValue]='isAssent'>Evet</option>
+            <option [ngValue]='!isAssent'>Hayır</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Cari Çeşidi</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="customer.customerType.id" name="customerType">
+            <option *ngFor="let item of customerTypes" [ngValue]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="!id">
+        <div class="col-6 col-md-4">Adres Etiketi</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Adres Etiketi (Örn: Ev Adresim, İş Adresim vb.)" [(ngModel)]="address.addressName" name="addressName"/>
+        </div>
+      </div>
+      <div class="row" *ngIf="!id">
+        <div class="col-6 col-md-4">İl</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="address.city.id" (change)="getDistricts()" name="city" #cityy="ngModel" required>
+            <option value="0" disabled selected>İl Seçiniz</option>
+            <option *ngFor="let item of cities" [ngValue]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="districts && !id">
+        <div class="col-6 col-md-4">İlçe</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="address.district.id" (change)="getNeighborhoods()" name="district" #districtt="ngModel" required>
+            <option value="0" disabled selected>İlçe Seçiniz</option>
+            <option *ngFor="let itemx of districts" [ngValue]="itemx.id">{{itemx.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="neighborhoods && !id">
+        <div class="col-6 col-md-4">Mahalle</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="address.neighborhood" (change)="neighborhoodSelected()" name="neighborhood" [compareWith]="customCompare" #neighborhoodd="ngModel" required>
+            <option [ngValue]="tempNeighborhood" selected disabled>Mahalle Seçiniz</option>
+            <option *ngFor="let itemz of neighborhoods" [ngValue]="itemz">{{itemz.postCode}}: {{itemz.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="!id">
+        <div class="col-6 col-md-4">Tam Adres</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Tam Adres (Cad. - Sokak, Apt.No/D.No vb.)" [(ngModel)]="address.fullAddress" minlength="4" name="fullAddress" #fullAddress="ngModel" required/>
+        </div>
+      </div>
+      <div class="row" *ngIf="!id">
+        <div class="col-6 col-md-4">Telefon Numarası</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Telefon Numarası (Örn. : 53xxxxxxxx - Max. 10 karakter)" [(ngModel)]="address.phoneNumber" name="phoneNumber" maxlength="10"/>
+        </div>
+      </div>
+      <div class="row" *ngIf="!id">
+        <div class="col-6 col-md-4">Email</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Email" [(ngModel)]="address.email" name="email"/>
+        </div>
+      </div>
+      <div class="row" *ngIf="!id">
+        <div class="col-6 col-md-4">Fax</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Fax Numarası (Örn. : 212xxxxxxx - Max. 10 karakter)" [(ngModel)]="address.fax" name="fax" maxlength="10"/>
+        </div>
+      </div>
+
+    <div class="row errors">
+      <div class="col-12 col-md-8">
+        <p class="errorText" *ngIf="(!tcVkn.valid && tcVkn.touched)">**TC/VKN girmelisiniz</p>
+        <p class="errorText" *ngIf="(!f.valid && tcVkn.touched)">**İsim/Ünvan, İl, İlçe, Mahalle, ve Tam adres bölümlerini eksiksiz doldurunuz.</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addCustomer()" [disabled]="!f.valid">Kaydet</button>
+      <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateCustomer()" [disabled]="!f.valid">Güncelle</button>
+    </div>
+  </form>
+</div>
+</div>

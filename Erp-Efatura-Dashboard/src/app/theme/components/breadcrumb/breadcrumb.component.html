@@ -1,0 +1,8 @@
+<ol class="breadcrumb">
+    <!--<li *ngIf="router.url != '/pages/dashboard'" class="breadcrumb-item"><a (click)="closeSubMenus()"><i class="fa fa-home mr-2"></i>Anasayfa</a></li>-->
+    <li *ngFor="let item of menuItems; let i = index;" class="menuItem">
+        <!--<a [hidden]="router.url != item.routerLink">{{item.title}}</a>-->
+        <i [hidden]="item && (router.url != item.routerLink)" class="fa fa-{{item ? item.icon : ''}}"></i>
+        <span [hidden]="item && router.url != item.routerLink"><b>{{item ? item.title : ''}}</b></span>
+    </li>
+</ol>

@@ -1,0 +1,8 @@
+<div class="sidebar-outer">
+    <a class="logo d-flex align-items-center" routerLink="/pages/dashboard" (click)="closeSubMenus()" *ngIf="settings.theme.sidebarIsFixed">
+        <span class="ng">JAVA</span>
+        <a><small>e-Fatura</small></a>
+    </a>
+    
+    <app-vertical-menu [menuItems]="menuItems"></app-vertical-menu>
+</div>

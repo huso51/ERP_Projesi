@@ -1,0 +1,37 @@
+<div class="row" *ngIf="dolar">
+
+  <div class="col-lg-4 col-md-6 mb-4">
+    <div class="card card-info text-white text-center">
+      <div class="card-block">
+        <h4 class="card-title">$ USD</h4>
+        <h3>{{doviz.full_name}}</h3>
+        <p class="lead" style="font-size:20px"><span *ngIf="dolar < 0" class="fa fa-arrow-down" style="color: orangered"></span><span *ngIf="dolar > 0" class="fa fa-arrow-up" style="color: lawngreen"></span> <strong>Alış {{doviz.buying}}</strong></p>
+        <p class="lead" style="font-size:20px"><strong>Satış {{doviz.selling}}</strong></p>
+        <p class="lead" style="font-size:20px"><strong>% {{doviz.change_rate | number : '1.2-3'}} </strong><span *ngIf="doviz.change_rate < 0" class="fa fa-level-down" style="color: orangered"></span><span *ngIf="doviz.change_rate > 0" class="fa fa-level-up" style="color: lawngreen"></span></p>
+      </div>
+    </div>
+  </div>
+
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card card-success text-white text-center">
+    <div class="card-block">
+      <h4 class="card-title">€ EURO</h4>
+      <h3>{{doviz1.full_name}}</h3>
+      <p class="lead" style="font-size:20px"><span *ngIf="euro < 0" class="fa fa-arrow-down" style="color: orangered"></span><span *ngIf="euro > 0" class="fa fa-arrow-up" style="color: lawngreen"></span> <strong>Alış {{doviz1.buying}}</strong></p>
+      <p class="lead" style="font-size:20px"><strong>Satış {{doviz1.selling}}</strong></p>
+      <p class="lead" style="font-size:20px"><strong>% {{doviz1.change_rate | number : '1.2-3'}} </strong><span *ngIf="doviz1.change_rate < 0" class="fa fa-level-down" style="color: orangered"></span><span *ngIf="doviz1.change_rate > 0" class="fa fa-level-up" style="color: lawngreen"></span></p>
+    </div>
+  </div>
+</div>
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card card-primary text-white text-center">
+    <div class="card-block">
+      <h4 class="card-title">£ GBP</h4>
+      <h3>{{doviz2.full_name}}</h3>
+      <p class="lead" style="font-size:20px"><span *ngIf="pound < 0" class="fa fa-arrow-down" style="color: orangered"></span><span *ngIf="pound > 0" class="fa fa-arrow-up" style="color: lawngreen"></span> <strong>Alış {{doviz2.buying}}</strong></p>
+      <p class="lead" style="font-size:20px"><strong>Satış {{doviz2.selling}}</strong></p>
+      <p class="lead" style="font-size:20px"><strong>% {{doviz2.change_rate | number : '1.2-3'}} </strong><span *ngIf="doviz2.change_rate < 0" class="fa fa-level-down" style="color: orangered"></span><span *ngIf="doviz2.change_rate > 0" class="fa fa-level-up" style="color: lawngreen"></span></p>
+    </div>
+  </div>
+</div>
+</div>

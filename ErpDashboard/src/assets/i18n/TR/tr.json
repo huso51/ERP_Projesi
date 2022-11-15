@@ -1,0 +1,126 @@
+{
+  "login": {
+    "title": "Portal Sayfasına Giriş",
+    "signup_link": "E-Fatura Portal'de yeni misin? Üye ol!",
+    "email": "Email",
+    "password": "Şifre",
+    "sign_in": "Giriş",
+    "register": "Üye Ol",
+    "forgot_password": "Şifremi Unuttum?",
+    "sign_from_app_text": "veya tek tıkla Giriş Yap",
+    "share_on_facebook": "Facebook'da Paylaş",
+    "share_on_twitter": "Twitter'da Paylaş",
+    "share_on_google_plus": "Google Plus'Paylaş "
+  },
+  "validate": {
+    "title": "Şifre Oluştur",
+    "password": "Şifre",
+    "submit_button": "Tamamla",
+    "passwordrepeat": "Tekrar",
+    "passwordnotmatch": "Şifreler eşleşmiyor"
+  },
+  "general": {
+    "akveo": "Burak",
+    "home": "Anasayfa",
+    "forms": {
+      "option1": "Option 1"
+    },
+    "menu": {
+      "dashboard": "Anasayfa",
+      "users": "Kullanıcı",
+      "tenants": "Organizasyon",
+      "customers": "Cari",
+      "categories": "Kategori",
+      "items": "Ürün",
+      "stocks": "Stok",
+      "allinvoices": "Fatura",
+      "invoices": "Giden Fatura",
+      "invoicesCame": "Gelen Fatura",
+      "options": "Sistem Ayarları",
+      "manage": "Üye Yönetimi",
+      "editors": "Editorler",
+      "ck_editor": "CKEditor",
+      "components": "İçerikler",
+      "tree_view": "Ağaç Görünümü",
+      "charts": "Grafikler",
+      "chartist_js": "Chartist.Js",
+      "ui_features": "UI İçerikleri",
+      "typography": "Kelime-İşlem Araçları",
+      "buttons": "Butonlar",
+      "icons": "Iconlar",
+      "modals": "Modallar",
+      "grid": "Grid",
+      "form_elements": "Form Elemanları",
+      "form_inputs": "Form Girdileri",
+      "form_layouts": "Form Taslakları",
+      "tables": "Tablolar",
+      "basic_tables": "Sade Tablo",
+      "smart_tables": "Akıllı Tabl0",
+      "maps": "Maps",
+      "google_maps": "Google Maps",
+      "leaflet_maps": "Leaflet Maps",
+      "bubble_maps": "Bubble Maps",
+      "line_maps": "Line Maps",
+      "pages": "Sayfalar",
+      "login": "Giriş",
+      "register": "Kayıt Ol",
+      "menu_level_1": "Menu Level 1",
+      "menu_level_1_1": "Menu Level 1.1",
+      "menu_level_1_2": "Menu Level 1.2",
+      "menu_level_1_2_1": "Menu Level 1.2.1",
+      "external_link": "Dış Link"
+    },
+    "created_with": "Created with"
+  },
+  "dashboard": {
+    "acquisition_channels": "Edinme Kanalları",
+    "users_by_country": "Ülke dağılımına Göre Kullanıcılar",
+    "revenue": "Kazanç",
+    "feed": "Haber Kaynağı",
+    "todo_list": "Yapılacaklar Listesi",
+    "calendar": "Takvim",
+    "new_visits": "Yeni Ziyaretçi",
+    "purchases": "Satın Almalar",
+    "active_users": "Aktif Kullanıcılar",
+    "returned": "Geri Dönen",
+    "popular_app": {
+      "super_app": "Super Uygulama",
+      "most_popular_app": "En popüler Fink",
+      "total_visits": "Toplam Ziyaret",
+      "new_visits": "Yeni Ziyaretler",
+      "sales": "Satış"
+    },
+    "todo": {
+      "task_todo": "Yapılacak Başlıklar"
+    },
+    "traffic_chart": {
+      "view_total": "Bütün Görünüm"
+    }
+  },
+  "tree_view": {
+    "title": "basic",
+    "programming": "Programming languages by programming paradigm",
+    "oop": "Object-oriented programming",
+    "java": "Java",
+    "c_plus_plus": "C++",
+    "c_sharp": "C#",
+    "prototype": "Prototype-based programming",
+    "java_script": "JavaScript",
+    "coffee_script": "CoffeeScript",
+    "lua": "Lua"
+  },
+  "chart": {
+    "lines": "Lines",
+    "bars": "Bars",
+    "simple_line_chart": "Simple line chart",
+    "line_chart": "Line chart with area",
+    "bi_polar_line_chart": "Bi-polar line chart with area only",
+    "simple_bar_chart": "Simple bar chart",
+    "multi_line_labels_bar_chart": "Multi-line labels bar chart",
+    "stacked_bar_chart": "Stacked bar chart",
+    "pies_and_donuts": "Pies & Donuts",
+    "simple_pie": "Simple Pie",
+    "pie_with_labels": "Pie with labels",
+    "donut": "Donut"
+  }
+}

@@ -1,0 +1,100 @@
+<div class="widgets">
+    <div class="row">
+        <ba-card title="Kullanıcı Arama" baCardClass="with-scroll" class="data-table-container">
+            <div class="row">
+                <div class="col-md-2" title="ID">
+                    <label class="label-control">ID</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchUserId" (keyup.enter)="search()" type="number" placeholder="Kullanıcı Id"/>
+                </div>
+                <div class="col-md-1" title="İsim">
+                    <label class="label-control">İsim</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchName" (keyup.enter)="search()" type="text" placeholder="İsim"/>
+                </div>
+                <div class="col-md-2" title="Email">
+                    <label class="label-control">Email</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchEmail" (keyup.enter)="search()" type="text" placeholder="Email"/>
+                </div>
+                <div class="col-md-1" title="SatırSayısı">
+                    <label class="label-control">SatırSayısı</label>
+                    <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="200" step="20" />
+                </div>
+                <div class="col-md-1" title="Ölçütler">
+                    <label class="col-sm-12 label-control">Ölçütler</label>
+                    <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderSelect">
+                        <option ngValue="id">ID</option>
+                        <option ngValue="name">İsim</option>
+                        <option ngValue="description">Kullanıcı Adı</option>
+                        <option ngValue="email">Email</option>
+                        <option ngValue="created_at">Üyelik Tarihi</option>
+                        <option ngValue="status">Aktif/Pasif</option>
+                    </select>
+                </div>
+                <div class="col-md-1" title="Sıralama">
+                  <label class="col-sm-12 label-control">Sıralama</label>
+                   <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderBy">
+                       <option ngValue="asc">Artan</option>
+                        <option ngValue="desc">Azalan</option>
+                   </select>
+                </div>
+                <div class="col-md-2" title="İlk Tarih">
+                  <label class="col-sm-12 label-control">İlk</label>
+                  <my-date-picker name="mydate1" [options]="myDatePickerOptions" [selector]="dateSelector1" (click)="openCalendar1()" (dateChanged)="onDateChanged($event)"
+                    [(ngModel)]="searchFirstDate" required></my-date-picker>
+                </div>
+                <div class="col-md-2" title="Son Tarih">
+                  <label class="col-sm-12 label-control">Son</label>
+                  <my-date-picker name="mydate2" [options]="myDatePickerOptions" [selector]="dateSelector2" (click)="openCalendar2()" (dateChanged)="onDateChanged($event)"
+                    [(ngModel)]="searchLastDate" required></my-date-picker>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div id="search-button" class="col-sm-4" title="Ara">
+                        <button class="btn btn-success" (click)="search()"><i class="fa fa-refresh"></i> Ara</button>
+                </div>
+                <div *ngIf="user.tenantUsers.userRole.user=='a' || user.tenantUsers.userRole.user=='w'" title="Yeni Kullanıcı" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                        <button class="btn btn-info" (click)="addUser()">Yeni Kullanıcı</button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Kullanıcı Bilgileri">Kullanıcı Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="İsim">İsim</th>
+                            <th title="Email">Email</th>
+                            <th title="Organizasyon">Organizasyon</th>
+                            <th title="Üyelik Tarihi">Üyelik Tarihi</th>
+                            <th class="align-right" title=""></th>
+                            <!-- <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of users; let ind=index">
+                            <td class="long-text" title="{{item.name}}">{{item.name}}</td>
+                            <td title="{{item.email}}">{{item.email}}</td>
+                            <td class="long-text" title="{{item.tenantUsers.tenant.name}}">{{item.tenantUsers.tenant.name}}</td>
+                            <td title="{{item.created_at}}">{{item.created_at}}</td>
+                            <td class="align-right" title="Düzenle">
+                                <button title="Aktif/Pasif" [ngClass]="item.status === 'ENABLED' ? 'btn btn-success' : 'btn btn-danger'" *ngIf="(user.tenantUsers.userRole.user==='a' || user.tenantUsers.userRole.user=='w')  && (user.tenantUsers.tenant.id === item.tenantUsers.tenant.id)" 
+                                (click)="changeUserStatus(ind)"><i [ngClass]="item.status === 'ENABLED' ? 'ion-checkmark-round' : 'ion-close-round'"></i></button>
+                                <button title="Düzenle" *ngIf="(user.tenantUsers.userRole.user==='a' || user.tenantUsers.userRole.user=='w')  && (user.tenantUsers.tenant.id === item.tenantUsers.tenant.id)" 
+                                (click)="updateUser(ind)" class="btn btn-primary"><i class="ion-edit"></i></button>
+                                
+                            </td>
+                            <!-- <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </ba-card>
+    </div>
+</div>

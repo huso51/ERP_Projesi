@@ -1,0 +1,151 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="user.id" class="modal-title">Kullanıcı Düzenleme</h4>
+    <h4 *ngIf="!user.id" class="modal-title">Kullanıcı Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm">
+      <div *ngIf="user.id" class="row">
+        <div class="col-6 col-md-4">ID</div>
+        <div class="col-12 col-md-8">
+          {{user.id}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">İsim</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!userName.valid && userName.touched), 'has-success': (userName.valid && userName.touched)}">
+          <input class="form-control" type="text" placeholder="İsim" [(ngModel)]="user.name" name="userName" #userName="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Email</div>
+        <div class="col-12 col-md-8" *ngIf="!id" [ngClass]="{'has-error': (!userEmail.valid && userEmail.touched), 'has-success': (userEmail.valid && userEmail.touched)}">
+          <input class="form-control" type="text" placeholder="Email" [(ngModel)]="user.email" name="userEmail" #userEmail="ngModel" email required/>
+        </div>
+        <div class="col-12 col-md-8" *ngIf="id">
+          <p>{{user.email}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Şifre</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!user.id && !userPassword.valid && userPassword.touched), 'has-success': (!user.id && userPassword.valid && userPassword.touched)}">
+          <input class="form-control" type="text" placeholder="Şifre" [(ngModel)]="user.password" name="userPassword" #userPassword="ngModel" [required]="!user.id"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Açıklama/Görev Tanımı" [(ngModel)]="user.description" name="userDescription" #userDescription="ngModel"/>
+        </div>
+      </div>
+      <div *ngIf="user.status" class="row">
+        <div class="col-6 col-md-4">Durumu</div>
+        <div *ngIf="user.status=='ENABLED'" class="col-12 col-md-8">Aktif</div>
+        <div *ngIf="user.status=='DISABLED'" class="col-12 col-md-8">Pasif</div>
+      </div>
+      <!-- 
+      <div class="row" *ngIf="id">
+        <div class="col-6 col-md-4">Üst Organizasyon</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.defaultTenantId">
+            <option *ngFor="let item of tenants" [ngValue]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+      -->
+      <div class="row">
+        <div class="col-6 col-md-4">Yetki(Kullanıcılar)</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.user" name="userRole">
+            <option value="x">Hiçbiri</option>
+            <option value="r">Listeleme</option>
+            <option value="w">Ekleme</option>
+            <option value="a">Hepsi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Yetki(Organizasyonlar)</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.tenant" name="tenantRole">
+            <option value="x">Hiçbiri</option>
+            <option value="r">Listeleme</option>
+            <option value="w">Ekleme</option>
+            <option value="a">Hepsi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Yetki(Cari)</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.customer" name="customerRole">
+            <option value="x">Hiçbiri</option>
+            <option value="r">Listeleme</option>
+            <option value="w">Ekleme</option>
+            <option value="a">Hepsi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Yetki(Stoklar)</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.item" name="itemRole">
+            <option value="x">Hiçbiri</option>
+            <option value="r">Listeleme</option>
+            <option value="w">Ekleme</option>
+            <option value="a">Hepsi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Yetki(Faturalar)</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.invoice" name="invoiceRole">
+            <option value="x">Hiçbiri</option>
+            <option value="r">Listeleme</option>
+            <option value="w">Ekleme</option>
+            <option value="a">Hepsi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Yetki(Kasa)</div>
+        <div class="col-12 col-md-8">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.account" name="accountRole">
+            <option value="x">Hiçbiri</option>
+            <option value="r">Listeleme</option>
+            <option value="w">Ekleme</option>
+            <option value="a">Hepsi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="currentUser.tenantUsers.userRole.isTenantAdmin">
+        <div class="col-6 col-md-4" *ngIf="(currentUser.tenantUsers.tenant.id === user.tenantUsers.tenant.id) && currentUser.tenantUsers.userRole.isTenantAdmin">
+          Yetki(SuperAdmin)
+          </div>
+        <div class="col-12 col-md-8" *ngIf="(currentUser.tenantUsers.tenant.id === user.tenantUsers.tenant.id) && currentUser.tenantUsers.userRole.isTenantAdmin">
+          <select class="form-control input-sm" [(ngModel)]="user.tenantUsers.userRole.isTenantAdmin" name="isSuperAdminx">
+            <option value="false">Hayır</option>
+            <option value="true">Evet</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row errors">
+      <div class="col-12 col-md-8">
+        <p class="errorText" *ngIf="(!userName.valid && userName.touched)">**İsim girmelisiniz</p>
+        <p class="errorText" *ngIf="(!user.id && !userPassword.valid && userPassword.touched)">**Şifre girmelisiniz</p>
+        <p class="errorText" *ngIf="(!f.valid && userName.valid && userPassword.valid && userName.touched && userPassword.touched)">**Email girmelisiniz</p>
+      </div>
+    </div>
+
+      <div class="modal-footer">
+        <button *ngIf="user.id" class="btn btn-success confirm-btn" (click)="updateUser()" [disabled]="!f.valid">Güncelle</button>
+        <button *ngIf="!user.id" class="btn btn-primary confirm-btn" (click)="addUser()" [disabled]="!f.valid">Kaydet</button>
+      </div>
+    </form>
+  </div>
+</div>

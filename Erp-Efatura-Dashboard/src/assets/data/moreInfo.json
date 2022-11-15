@@ -1,0 +1,37 @@
+[
+    {
+        "id":1,
+        "name":"Hizmet No",
+        "value": "123321"
+    },
+    {
+        "id":2,
+        "name":"Müşteri No",
+        "value": "345345"
+    },
+    {
+        "id":3,
+        "name":"Tesisat No",
+        "value": "345"
+    },
+    {
+        "id":4,
+        "name":"Telefon No",
+        "value": "54245"
+    },
+    {
+        "id":5,
+        "name":"Distrubutor No",
+        "value": "6774324"
+    },
+    {
+        "id":6,
+        "name":"Ticari Sicil No",
+        "value": "7843784378"
+    },
+    {
+        "id":7,
+        "name":"TAPDK No",
+        "value": "775934093"
+    }
+]

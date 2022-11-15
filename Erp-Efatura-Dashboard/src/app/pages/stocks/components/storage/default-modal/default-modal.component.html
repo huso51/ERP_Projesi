@@ -1,0 +1,46 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Depo Güncelleme</h4>
+    <h4 *ngIf="!id" class="modal-title">Depo Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">Adı</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!storageName.valid && storageName.touched), 'has-success': (storageName.valid && storageName.touched)}">
+          <input class="form-control" type="text" placeholder="Depo Adı" [(ngModel)]="storage.name" 
+             minlength="2" name="storageName" #storageName="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Adres</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!storageAddress.valid && storageAddress.touched), 'has-success': (storageAddress.valid && storageAddress.touched)}">
+          <input class="form-control" type="text" placeholder="Depo Adresi" [(ngModel)]="storage.address" 
+             minlength="2" name="storageAddress" #storageAddress="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!storageDescription.valid && storageDescription.touched), 'has-success': (storageDescription.valid && storageDescription.touched)}">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="storage.description" 
+               minlength="2" name="storageDescription" #storageDescription="ngModel" required/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addStorage()" [disabled]="!f.valid">Kaydet</button>
+        <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateStorage()" [disabled]="!f.valid">Güncelle</button>
+      </div>
+
+      <div class="row errors">
+        <div class="col-12 col-md-8">
+          <p class="errorText" *ngIf="(!storageName.valid && storageName.touched)">**Depo adı girmelisiniz</p>
+          <p class="errorText" *ngIf="(!storageDescription.valid && storageDescription.touched)">**Depo açıklama girmelisiniz</p>
+        </div>
+    </div>
+
+    </form>
+  </div>
+</div>

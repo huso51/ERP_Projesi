@@ -1,0 +1,59 @@
+@import '../../theme/sass/conf/conf';
+:host /deep/ .widgets {
+    .data-table-container {
+        padding: 7px;
+        width: 100%;
+        .panel-heading {
+            margin-top: 25px;
+        }
+    }
+
+    .col-md-6.offset-md-3{
+        margin: auto;
+        text-align: center;
+    }
+
+    .horizontal-scroll{
+        margin: auto;
+        width: stretch;
+        max-width: 75%;
+    }
+    input{
+        
+    }
+    select{
+        width: fit-content;
+    }
+    button.tenantButton {
+        width: fit-content;
+        margin: auto;
+    }
+    .faturaonek {
+        background-color: lightgray;
+    }
+    .with-scroll.tenantButton{
+        text-align: center;
+    }
+    .col-md-2 {
+        max-width: auto;
+    }
+
+    .col-md-2.align-right.inputs-text {
+        padding-top: 8px;
+    }
+
+    .row.test {
+        margin-top: 18px;
+        background-color: lightgrey;
+        padding-top: 5px;
+        margin: 18px 2px;
+        padding-bottom: 5px;
+        border-radius: 13px;
+    }
+    .col-md-12.note {
+        padding-left: 4%;
+        color: red;
+        font-style: italic;
+    }
+
+}

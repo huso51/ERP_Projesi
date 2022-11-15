@@ -1,0 +1,39 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Kategori Güncelleme</h4>
+    <h4 *ngIf="!id" class="modal-title">Kategori Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">Adı</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!categoryName.valid && categoryName.touched), 'has-success': (categoryName.valid && categoryName.touched)}">
+          <input class="form-control" type="text" placeholder="Kategori Adı" [(ngModel)]="category.name" 
+             minlength="2" name="categoryName" #categoryName="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!categoryDescription.valid && categoryDescription.touched), 'has-success': (categoryDescription.valid && categoryDescription.touched)}">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="category.description" 
+               minlength="2" name="categoryDescription" #categoryDescription="ngModel" required/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addCategory()" [disabled]="!f.valid">Kaydet</button>
+        <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateCategory()" [disabled]="!f.valid">Güncelle</button>
+      </div>
+
+      <div class="row errors">
+        <div class="col-12 col-md-8">
+          <p class="errorText" *ngIf="(!categoryName.valid && categoryName.touched)">**Kategori adı girmelisiniz</p>
+          <p class="errorText" *ngIf="(!categoryDescription.valid && categoryDescription.touched)">**Kategori açıklama girmelisiniz</p>
+        </div>
+    </div>
+
+    </form>
+  </div>
+</div>

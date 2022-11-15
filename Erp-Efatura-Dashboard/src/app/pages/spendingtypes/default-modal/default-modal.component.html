@@ -1,0 +1,39 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Masraf Kalemi Güncelleme</h4>
+    <h4 *ngIf="!id" class="modal-title">Masraf Kalemi Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">Adı</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!spendingtypeName.valid && spendingtypeName.touched), 'has-success': (spendingtypeName.valid && spendingtypeName.touched)}">
+          <input class="form-control" type="text" placeholder="Masraf Kalemi Adı" [(ngModel)]="spendingtype.name" 
+             minlength="2" name="spendingtypeName" #spendingtypeName="ngModel" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!spendingtypeDescription.valid && spendingtypeDescription.touched), 'has-success': (spendingtypeDescription.valid && spendingtypeDescription.touched)}">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="spendingtype.description" 
+               minlength="2" name="spendingtypeDescription" #spendingtypeDescription="ngModel" required/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addSpendingType()" [disabled]="!f.valid">Kaydet</button>
+        <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateSpendingType()" [disabled]="!f.valid">Güncelle</button>
+      </div>
+
+      <div class="row errors">
+        <div class="col-12 col-md-8">
+          <p class="errorText" *ngIf="(!spendingtypeName.valid && spendingtypeName.touched)">**Masraf Kalemi adı girmelisiniz</p>
+          <p class="errorText" *ngIf="(!spendingtypeDescription.valid && spendingtypeDescription.touched)">**Masraf Kalemi açıklama girmelisiniz</p>
+        </div>
+    </div>
+
+    </form>
+  </div>
+</div>

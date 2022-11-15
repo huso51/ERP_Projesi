@@ -1,0 +1,82 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="id" class="modal-title">Adres Güncelleme</h4>
+    <h4 *ngIf="!id" class="modal-title">Adres Ekleme</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-6 col-md-4">Adres Etiketi</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" type="text" placeholder="Adres Etiketi (Örn: Ev Adresim, İş Adresim vb.)" [(ngModel)]="address.addressName"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">İl</div>
+      <div class="col-12 col-md-8">
+        <select class="form-control input-sm" [(ngModel)]="address.city.id" (change)="getDistricts()">
+            <option value="0" selected disabled>İl Seçiniz</option>
+          <option *ngFor="let item of cities" [ngValue]="item.id">{{item.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" *ngIf="address.city.id">
+      <div class="col-6 col-md-4">İlçe</div>
+      <div class="col-12 col-md-8">
+        <select class="form-control input-sm" [(ngModel)]="address.district.id" (change)="getNeighborhoods()">
+            <option value="0" selected disabled>İlçe Seçiniz</option>
+          <option *ngFor="let itemx of districts" [ngValue]="itemx.id">{{itemx.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" *ngIf="address.district.id">
+      <div class="col-6 col-md-4">Mahalle</div>
+      <div class="col-12 col-md-8">
+        <select class="form-control input-sm" [(ngModel)]="address.neighborhood.id" (select)="selectNeighborhood()">
+          <option value="0" selected disabled>Mahalle Seçiniz</option>
+          <option *ngFor="let itemz of neighborhoods" [ngValue]="itemz.id">{{itemz.postCode}}: {{itemz.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Tam Adres</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" type="text" placeholder="Tam Adres" [(ngModel)]="address.fullAddress"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Telefon Numarası</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" type="text" placeholder="Telefon Numarası (Örn. : 53xxxxxxxx - Max. 10 karakter)" [(ngModel)]="address.phoneNumber" maxlength="10"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Email</div>
+      <div class="col-12 col-md-8">
+        <input class="form-control" type="text" placeholder="Email" [(ngModel)]="address.email"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Fax</div>
+          <div class="col-12 col-md-8">
+            <input class="form-control" type="text" placeholder="Fax Numarası (Örn. : 212xxxxxxx - Max. 10 karakter)" [(ngModel)]="address.fax" maxlength="10"/>
+          </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4">Varsayılan Adres</div>
+      <div class="col-12 col-md-8">
+        <select class="form-control input-sm" [(ngModel)]="address.isDefaultAddress">
+          <option value="true">Evet</option>
+          <option value="false">Hayır</option>
+        </select>
+      </div>
+    </div>
+
+  <div class="modal-footer">
+    <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addAddress()">Kaydet</button>
+    <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateAddress()">Güncelle</button>
+  </div>
+</div>
+</div>

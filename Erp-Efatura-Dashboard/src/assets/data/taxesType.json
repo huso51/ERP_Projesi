@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "code": "0015",
+        "taxAmount": 0,
+        "description": "KDV GERCEK"
+    },
+    {
+        "id": 2,
+        "code": "0071",
+        "taxAmount": 0,
+        "description": "ÖTV 1.LİSTE"
+    },
+    {
+        "id": 3,
+        "code": "4080",
+        "taxAmount": 0,
+        "description": "Ö.İLETİŞİM V"
+    },
+    {
+        "id": 4,
+        "code": "0073",
+        "taxAmount": 0,
+        "description": "ÖTV 3.LİSTE"
+    },
+    {
+        "id": 5,
+        "code": "0003",
+        "taxAmount": 0,
+        "description": "GV STOPAJI"
+    },
+    {
+        "id": 6,
+        "code": "0011",
+        "taxAmount": 0,
+        "description": "KV STOPAJI"
+    },
+    {
+        "id": 7,
+        "code": "0021",
+        "taxAmount": 0,
+        "description": "BMV"
+    },
+    {
+        "id": 8,
+        "code": "0061",
+        "taxAmount": 0,
+        "description": "KKDF KESİNTİ"
+    },
+    {
+        "id": 9,
+        "code": "0074",
+        "taxAmount": 0,
+        "description": "ÖTV 4.LİSTE"
+    }
+]

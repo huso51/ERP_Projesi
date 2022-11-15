@@ -1,0 +1,97 @@
+<div class="widgets">
+  
+    <div class="row">
+        <ba-card title="Cari Arama" baCardClass="with-scroll" class="data-table-container">
+            <div class="row">
+                
+            </div>
+            <div class="row">
+                <div class="col-md-2" title="ID">
+                    <label class="label-control">ID</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchCustomerId" (keyup.enter)="search()" type="number" placeholder="Cari Id"/>
+                </div>
+                <div class="col-md-2" title="Cari Adı">
+                    <label class="label-control">Cari Adı</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchCustomer" (keyup.enter)="search()" type="text" placeholder="Cari Adı"/>
+                </div>
+                <div class="col-md-2" title="Ünvan">
+                    <label class="label-control">Ünvan</label>
+                    <input class="form-control input-sm" [(ngModel)]="searchAppellation" (keyup.enter)="search()" type="text" placeholder="Ünvan"/>
+                </div>
+                <div class="col-md-2" title="Satır Sayısı">
+                    <label class="label-control">SatırSayısı</label>
+                    <input class="form-control input-sm" [(ngModel)]="limit" (keyup.enter)="search()" type="number" min="0" max="200" step="20" />
+                </div>
+                <div class="col-md-2" title="Ölçütler">
+                    <label class="col-sm-12 label-control">Ölçütler</label>
+                    <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderSelect">
+                        <option ngValue="name">Cari Adı</option>
+                        <option ngValue="appellation">Ünvan</option>
+                        <option ngValue="created_at">Üyelik Tarihi</option>
+                        <option ngValue="taxAdministration">Aktif/Pasif</option>
+                        <option ngValue="customerTypeId">Müşteri Çeşidi</option>
+                    </select>
+                </div>
+                <div class="col-md-2" title="Sıralama">
+                  <label class="col-sm-12 label-control">Sıralama</label>
+                   <select class="form-control input-sm" (change)="search()" [(ngModel)]="orderBy">
+                       <option ngValue="asc">Artan</option>
+                        <option ngValue="desc">Azalan</option>
+                   </select>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div id="search-button" title="Ara" class="col-sm-4">
+                        <button class="btn btn-success" (click)="search()"><i class="fa fa-refresh"></i> Ara</button>
+                </div>
+                <div *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" title="Yeni Cari" id="search-button" class="col-md-4 offset-md-4" style="text-align:right;">
+                        <button class="btn btn-info" (click)="addCustomer()">Yeni Cari</button>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" title="Cari Bilgileri">Cari Bilgileri</div>
+
+                <table class="table table-striped" >
+                    <thead>
+                        <tr>
+                            <th title="TCKN/VKN">TCKN/VKN</th>
+                            <th title="Adı/Ünvanı">Adı/Ünvanı</th>
+                            <th title="Cari Çeşidi">Cari Çeşidi</th>
+                            <th title="Vergi Dairesi">Vergi Dairesi</th>
+                            <th title="İndirim">İndirim</th>
+                            <th title="Kredi Limiti">Kredi Limiti</th>
+                            <th title="Düzenle" class="align-right">Düzenle</th>
+
+                            <!-- <th>İzin Derecesi</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of customers; let ind=index">
+                            <td title="{{item.tc}}">{{item.tc}}</td>
+                            <td title="{{item.name}}" *ngIf="!item.appellation" id="appellation">{{item.name}}</td>
+                            <td title="{{item.appellation}}"*ngIf="item.appellation" id="appellation">{{item.appellation}}</td>
+                            <td title="{{item.customerType.name}}">{{item.customerType.name}}</td>
+                            <td title="{{item.taxAdministration}}">{{item.taxAdministration}}</td>
+                            <td title="{{item.basicDiscount}}">{{item.basicDiscount}}</td>
+                            <td title="{{item.creditLimit}}">{{item.creditLimit}}</td>
+                            <td title="" class="align-right">
+                                <button title="Adres" class="btn btn-warn address" [routerLink]="['/pages/addresses']" [queryParams]="{ id: item.id }"><i class="fa fa-address-card-o"></i></button>
+                                <button title="Düzenle" *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" (click)="updateCustomer(ind)" class="btn btn-primary"><i class="ion-edit"></i></button>
+                                <button title="Sil" *ngIf="user.tenantUsers.userRole.customer=='a' || user.tenantUsers.userRole.customer=='w'" (click)="deleteCustomer(ind)" class="btn btn-danger"><i class="ion-trash-a"></i></button>
+                            </td>
+                            <!-- <td>{{item.permissions}}</td> -->
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="12">
+                                
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </ba-card>
+    </div>
+</div>

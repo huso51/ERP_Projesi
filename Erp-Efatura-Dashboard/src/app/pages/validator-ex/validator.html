@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-center align-items-center w-100 h-100 register-container">
+  <div class="col-xl-4 col-md-6 col-10">
+      <div class="card border-0 box-shadow rounded-0">
+          <div class="card-header d-flex justify-content-center align-items-center border-0 box-shadow">
+              <i class="fa fa-registered" aria-hidden="true"></i>
+          </div>
+          <div class="card-block text-center pb-1">
+              <h2>Şifre Oluşturun</h2>
+              <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="text-left mt-4">
+
+                  <div class="form-group">
+                      <input [formControl]="password" class="form-control validation-field" placeholder="Şifre" type="password" minlength="5">
+                  </div>
+                  <div class="form-group">
+                      <input [formControl]="repeatPassword" class="form-control validation-field" placeholder="Şifre Tekrar" type="password">
+                      <span *ngIf="!form.valid && (password.touched || repeatPassword.touched)" class="help-block sub-little-text" >Şifreler Eşleşmiyor</span>
+                      
+                  </div>
+                  <div class="form-group row" *ngIf="success">
+                    <div class="offset-sm-1 col-sm-10">
+                      <label class="successmessage">{{success}}</label>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="error">
+                  <div class="offset-sm-1 col-sm-10">
+                    <label class="errormessage">{{error}}</label>
+                  </div>
+                </div>
+                  <div class="form-group">
+                  </div>             
+                  <div class="form-group">
+                    <button [disabled]="!form.valid" class="btn btn-block" type="submit">Onayla</button>
+                </div>
+              </form>  
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<!-- <div class="auth-main">
+  <div class="auth-block">
+    <h1 translate>{{'validate.title'}}</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+        <div class="form-group row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+            <label for="inputPassword3" class="col-sm-2 control-label">{{'validate.password'}}</label>
+    
+            <div class="col-sm-10" translate>
+              <input [formControl]="password" type="password" class="form-control" id="inputPassword3">
+            </div>
+          </div>
+          <div class="form-group row" [ngClass]="{'has-error': (!repeatPassword.valid && repeatPassword.touched), 'has-success': (repeatPassword.valid && repeatPassword.touched)}">
+            <label for="inputPassword4" class="col-sm-2 control-label">{{validate.passwordrepeat}}</label>
+    
+            <div class="col-sm-10">
+              <input [formControl]="repeatPassword" type="password" class="form-control" id="inputPassword4">
+              <span *ngIf="!passwords.valid && (password.touched || repeatPassword.touched)" class="help-block sub-little-text">Parola eşleşmedi</span>
+            </div>
+          </div>
+      <div class="form-group row" *ngIf="success">
+          <div class="offset-sm-1 col-sm-10">
+            <label class="successmessage">{{success}}</label>
+          </div>
+      </div>
+      <div class="form-group row" *ngIf="error">
+        <div class="offset-sm-1 col-sm-10">
+          <label class="errormessage">{{error}}</label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+          <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth" translate>{{'validate.submit_button'}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div> -->

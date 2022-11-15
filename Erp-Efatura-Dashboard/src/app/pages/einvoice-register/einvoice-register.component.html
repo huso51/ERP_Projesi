@@ -1,0 +1,109 @@
+<div class="widgets">
+
+    <div class="row">
+        <div class="card container">
+            <div class="centerDiv">
+                    <popover-content #myPopover title="Bilgilendirme" placement="bottom" [closeOnClickOutside]="true">
+                        {{hoverText}}
+                        <ul>
+                            <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Ad</b>: Gerçek Kişiler için kişinin ilk adıyazılacaktır. Tüzel kişilikler için kullanılmasına gerek yoktur. <br> </li>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Soyad</b>: Gerçek Kişiler için kişinin soyadı yazılmalıdır. Tüzel kişilikler için kullanılmasına gerek yoktur. <br>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Ünvan</b>: Tüzel kişilik ise ticari sicil gazetesinde bulunan şirket ünvanı, gerçek kişi ise nüfus kayıtlarında bulunan Adı ve Soyadı yazılmalıdır. <br></li>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Posta Kutusu</b>: Posta kutusu ("urn:mail:*" şeklinde başlaması zorunlu) Ör:"urn:mail:defaultpk@java.com.tr" <br></li>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Gönderici Birim</b>: Gönderici birim ("urn:mail:*" şeklinde başlaması zorunlu) Ör:"urn:mail:defaultgb@java.com.tr" <br></li>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Sertifika Sahibinin Seri Numarası</b>: Sertifika sahibinin seri numarası(Mali Mühür sahibi) <br></li>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Sertifika Seri Numarası</b>: Sertifika seri numarası(Mali Mühür) <br></li>
+                                <li style="background-color: lightgrey; color:black; border:1px solid grey;">
+                                <b>Pin</b>: Sertifika pin numarası (Mali Mühür) <br></li>
+                        </ul>
+                      </popover-content>
+                  
+                      <button class="form-control" [popover]="myPopover"><i class="fa fa-info"></i></button>
+            </div>
+            <div class="card downloadButton data-table-container">
+                <a class="downloadButton" href="https://efatura.java.com.tr/assets/data/imza.msi">
+                    <i class="fa fa-download"></i> İmza Aracını indir
+                </a>
+            </div>
+            <form #f="ngForm">
+                <div class="centerDiv">TCKN/VKN</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!partyId.valid && partyId.touched), 'has-success': (partyId.valid && partyId.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.partyId" type="text" name="partyId" #partyId="ngModel" minlength="10" maxlength="11" required/>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv" *ngIf="integrationInfo.partyId.length===11">Ad</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!firstName.valid && firstName.touched), 'has-success': (firstName.valid && firstName.touched)}"
+                *ngIf="integrationInfo.partyId.length==11">
+                    <input class="form-control" [(ngModel)]="integrationInfo.firstName" type="text" name="firstName" #firstName="ngModel" minlength="2" required/>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv" *ngIf="integrationInfo.partyId.length===11">Soyad</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!lastName.valid && lastName.touched), 'has-success': (lastName.valid && lastName.touched)}"
+                *ngIf="integrationInfo.partyId.length===11">
+                    <input class="form-control" [(ngModel)]="integrationInfo.lastName" type="text" name="lastName" #lastName="ngModel" required/>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv">Ünvan</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!partyName.valid && partyName.touched), 'has-success': (partyName.valid && partyName.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.partyName" type="text" name="partyName" #partyName="ngModel" required/>
+                </div>
+
+                <div class="col-12 col-md-4 centerDiv">
+                    <label><input type="checkbox" name="eFatura" [checked]="isEfatura" (change)="isEfatura = !isEfatura"/> E-Fatura</label>
+                </div>
+                <div class="col-12 col-md-4 centerDiv">
+                    <label><input type="checkbox" name="eFatura" [checked]="isEsaklama" (change)="isEsaklama = !isEsaklama"/> E-Saklama</label>
+                </div>
+                <div class="col-12 col-md-4 centerDiv">
+                    <label><input type="checkbox" name="eFatura" [checked]="isEarsiv" (change)="isEarsiv = !isEarsiv"/> E-Arşiv</label>
+                </div>
+                <div class="col-12 col-md-4 centerDiv">
+                    <label><input type="checkbox" name="eFatura" [checked]="isEarsivSaklama" (change)="isEarsivSaklama = !isEarsivSaklama"/> E-Arşiv Saklama</label>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv">Posta Kutusu</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!pk.valid && pk.touched), 'has-success': (pk.valid && pk.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.pk" type="text" name="pk" #pk="ngModel" required/>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv">Gönderici Birim</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!gb.valid && gb.touched), 'has-success': (gb.valid && gb.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.gb" type="text" name="gb" #gb="ngModel" required/>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv">Sertifika Sahibinin Seri Numarası</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!certificateOwnerSerialNumber.valid && certificateOwnerSerialNumber.touched), 'has-success': (certificateOwnerSerialNumber.valid && certificateOwnerSerialNumber.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.certificateOwnerSerialNumber" type="text" name="certificateOwnerSerialNumber" 
+                    #certificateOwnerSerialNumber="ngModel" required />
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv">Sertifika Seri Numarası</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!certificateSerialNumber.valid && certificateSerialNumber.touched), 'has-success': (certificateSerialNumber.valid && certificateSerialNumber.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.certificateSerialNumber" type="text" name="certificateSerialNumber" 
+                    #certificateSerialNumber="ngModel" required/>
+                </div>
+
+                <div class="col-12 col-md-8 centerDiv">Pin</div>
+                <div class="col-12 col-md-8 centerDiv" [ngClass]="{'has-error': (!pin.valid && pin.touched), 'has-success': (pin.valid && pin.touched)}">
+                    <input class="form-control" [(ngModel)]="integrationInfo.pin" type="text" name="pin" #pin="ngModel" required/>
+                </div>
+                <div class="col-12 col-md-8 centerDiv buttonDiv">
+                   <button class="btn btn-primary confirm-btn centerDiv" (click)="sendRegisterInfo()" [disabled]="!f.valid && !buttonDisabled">
+                        <img *ngIf="buttonDisabled" src="/assets/img/loadingg.gif" alt="" width="25px" height="25px" style="margin-right:2px;">  Gönder
+                    </button> 
+                    
+                </div>
+                
+
+            </form>
+
+        </div>
+    </div>
+</div>

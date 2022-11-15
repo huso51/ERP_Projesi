@@ -1,0 +1,122 @@
+<div class="widgets">
+
+    <div class="row">
+        <div  class="card tenantButton data-table-container">
+            <button type="button" class="btn btn-primary confirm-btn tenantButton" (click)="tenantSettings()">Organizasyon Ayarları</button>
+        </div>
+        <div title="SMTP (Email gönderici) Ayarları" class="card data-table-container">
+            <div class="row">
+                <div class="col-md-2 align-right inputs-text">Email: </div>
+                <div class="col-md-2 align-left">
+                    <input class="form-control" [(ngModel)]="emailConn.username" type="text" name="username"/>
+                </div>
+                <div class="col-md-2 align-right inputs-text">Şifre: </div>
+                <div class="col-md-2 align-left">
+                    <input class="form-control" [(ngModel)]="emailConn.password" type="password" name="password"/>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-2 align-right inputs-text">Sunucu: </div>
+                    <div class="col-md-2 align-left">
+                        <input class="form-control" [(ngModel)]="emailConn.host" type="text" name="host"/>
+                    </div>
+                    <div class="col-md-2 align-right inputs-text">Port: </div>
+                    <div class="col-md-2 align-left">
+                        <input class="form-control" [(ngModel)]="emailConn.port" type="text" name="host"/>
+                    </div>
+                    <div class="col-md-2 align-right">
+                        <button type="button" class="btn btn-success" (click)="updateEmailConnection()">Güncelle</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 note">
+                    Not: Bazı Mail otoriteleri için ayarlardan üçüncü şahıs uygulamalara izin vermek gerekebilir...
+                    </div>
+                </div>
+                <div class="row test">
+                    <div class="col-md-2 offset-md-3 align-right inputs-text">Test Maili Gönder</div>
+                    <div class="col-md-2 align-left">
+                        <input class="form-control" [(ngModel)]="emailTo" type="text" name="testMail"/>
+                    </div>
+                    <div class="col-md-2 align-left">
+                            <button type="button" class="btn btn-success" (click)="sendTestMail()">Gönder</button>
+                    </div>
+                </div>
+            </div>
+        <div title="Fatura Seri / Ön Eki ayarları" baCardClass="with-scroll" class="data-table-container faturaonek">
+            <form #f="ngForm">
+                <div class="row">
+                    <div class="col-md-2 offset-md-1">
+                        <p style="text-align:right;">Fatura Ön Eki Ekleme</p>
+                    </div>
+                    <div title="Seri" placeholder="Seri" class="col-md-2" [ngClass]="{'has-error': (!prefixName.valid && prefixName.touched), 'has-success': (prefixName.valid && prefixName.touched)}" *ngIf="prefix.code!== 'ERP'">
+                        <input class="form-control" [(ngModel)]="prefix.name" type="text" name="prefixName" #prefixName="ngModel" maxlength="3" required/>
+                    </div>
+                    <div title="Seri" placeholder="Seri" class="col-md-2" [ngClass]="{'has-error': (!prefixName.valid && prefixName.touched), 'has-success': (prefixName.valid && prefixName.touched)}" *ngIf="prefix.code === 'ERP'">
+                        <input class="form-control" [(ngModel)]="prefix.name" type="text" name="prefixName" #prefixName="ngModel" maxlength="6" required/>
+                    </div>
+                    <div class="col-md-2">
+                        <input title="Açıklama" placeholder="Açıklama" class="form-control" [(ngModel)]="prefix.description" type="text" name="description"
+                            #description="ngModel" />
+                    </div>
+                    <div class="col-md-2" [ngClass]="{'has-error': (!code.valid && code.touched), 'has-success': (code.valid && code.touched)}">
+                        <select class="form-control input-sm" [(ngModel)]="prefix.code" name="code" #code="ngModel" required>
+                        <option value="EFATURA">E-Fatura</option>
+                        <option value="EARSIV">E-Arşiv</option>
+                        <option value="ERP" selected>Erp</option>
+                    </select>
+                    </div>
+                    <div class="col-md-2" [ngClass]="{ 'has-error': (!prefix.name), 'has-success': (prefix.name) }">
+                        <button type="submit" class="btn btn-primary confirm-btn" (click)="addPrefix()" [disabled]="!f.valid">Ekle</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row urun">
+                <div class="horizontal-scroll">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="black-muted-bg">
+                                <th class="align-left first-th"><b>Seri</b></th>
+                                <th class="align-left"><b>Açıklama</b></th>
+                                <th class="align-left"><b>Tipi</b></th>
+                                <th class="align-right"><b>İşlem</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of prefixes; let ind=index" class="no-top-border">
+                                <td *ngIf="!item.isEditing" class="align-left">{{item.name}}</td>
+                                <td *ngIf="!item.isEditing" class="align-left">{{item.description}}</td>
+                                <td *ngIf="!item.isEditing" class="align-left">{{item.code}}</td>
+                                <td *ngIf="!item.isEditing" class="align-right">
+                                    <button class="btn btn-success" (click)="item.isEditing=true;"><i class="ion-edit"></i></button>
+                                    <button class="btn btn-danger" (click)="deletePrefix(ind)"><i class="ion-trash-a"></i></button>
+                                </td>
+
+                                <!-- On edit condition -->
+                                    <td *ngIf="item.isEditing" class="align-left">
+                                            <input class="form-control" [(ngModel)]="item.name" type="text" name="prefixName" #prefixName="ngModel" maxlength="3" minlength="3" required/>
+                                    </td>
+                                    <td *ngIf="item.isEditing" class="align-left">
+                                            <input class="form-control" [(ngModel)]="item.description" type="text" name="description"/>
+                                    </td>
+                                    <td *ngIf="item.isEditing" class="align-left">
+                                            <select class="form-control input-sm" [(ngModel)]="item.code" name="code" #code="ngModel" required>
+                                                <option value="EFATURA">E-Fatura</option>
+                                                <option value="EARSIV">E-Arşiv</option>
+                                                <option value="ERP">Erp</option>
+                                            </select>
+                                    </td>
+                                    <td *ngIf="item.isEditing" class="align-right">
+                                        <button class="btn btn-success" (click)="updatePrefix(ind)"><i class="fa fa-floppy-o"></i></button>
+                                    </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <div  class="card tenantButton data-table-container">
+                <button type="button" class="btn btn-primary confirm-btn tenantButton" (click)="sendEinvoiceUserRequest()">E-Fatura Kullanıcısı ol</button>
+            </div>
+        </div>
+    </div>

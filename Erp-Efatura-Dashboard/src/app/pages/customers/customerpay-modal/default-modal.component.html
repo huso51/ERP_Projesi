@@ -1,0 +1,252 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 *ngIf="type==='cash'" class="modal-title">Nakit Ödeme/Alma</h4>
+    <h4 *ngIf="type==='checkbook'" class="modal-title">Çek Ödeme/Alma</h4>
+    <h4 *ngIf="type==='bill'" class="modal-title">Senet Ödeme/Alma</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="type==='cash'" class="modal-body">
+    <form #f="ngForm">
+      <div class="row">
+        <div class="col-6 col-md-4">Müşteri</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!customer.valid && customer.touched), 'has-success': (customer.valid && customer.touched)}">
+          <input auto-complete [(ngModel)]="customerPayment.customer" [source]="customers" [list-formatter]="autocompleteListFormatter"
+            name="customer" #customer="ngModel" display-property-name="name" value-property-name="appellation" no-match-found-text="Bulunamadı"
+            (valueChanged)="customerChanged($event)" placeholder="Müşteriler" class="form-control" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">İşlem</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!isPayingToCustomer.valid && isPayingToCustomer.touched), 'has-success': (isPayingToCustomer.valid && isPayingToCustomer.touched)}">
+          <select class="form-control input-sm" [(ngModel)]="paymentCash.isPayingToCustomer" name="isPayingToCustomer" #isPayingToCustomer="ngModel">
+            <option value='false'>Müşteriden Tahsilat</option>
+            <option value='true'>Müşteriye Ödeme</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Tarih</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!paymentDate.valid && paymentDate.touched), 'has-success': (paymentDate.valid && paymentDate.touched)}">
+          <my-date-picker name="mydate" [options]="myDatePickerOptions" [selector]="dateSelector" (click)="dateSelector={open : true};"
+            [(ngModel)]="billDate" name="paymentDate" #paymentDate="ngModel" required></my-date-picker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Açıklama</div>
+        <div class="col-12 col-md-8">
+          <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="paymentCash.description" name="description" #description="ngModel"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Kasa/Hesap</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!tenantAccount.valid && tenantAccount.touched), 'has-success': (tenantAccount.valid && tenantAccount.touched)}">
+          <select class="form-control input-sm" [(ngModel)]="paymentCash.tenantAccount" name="tenantAccount" #tenantAccount="ngModel"
+            required>
+            <option *ngFor="let item of accounts" [ngValue]='item'>{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-4">Tutar(TL)</div>
+        <div class="col-12 col-md-8" [ngClass]="{'has-error': (!amount.valid && amount.touched), 'has-success': (amount.valid && amount.touched)}">
+          <input class="form-control" type="number" placeholder="Tutar(TL)" [(ngModel)]="paymentCash.amount" name="amount" #amount="ngModel"
+            required/>
+        </div>
+      </div>
+
+      <div class="row errors">
+        <div class="col-12 col-md-8">
+          <p class="errorText" *ngIf="(!amount.valid && amount.touched)">**Tutar girmelisiniz</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addCustomerPayment()">Kaydet</button>
+        <button *ngIf="id" class="btn btn-success confirm-btn" (click)="updateCustomer()" [disabled]="!f.valid">Güncelle</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="type==='checkbook'" class="modal-body">
+      <form #f="ngForm">
+        <div class="row">
+          <div class="col-6 col-md-4">İşlem</div>
+          <div class="col-12 col-md-8" [ngClass]="{'has-error': (!isPayingToCustomerx.valid && isPayingToCustomerx.touched), 'has-success': (isPayingToCustomerx.valid && isPayingToCustomerx.touched)}">
+            <select class="form-control input-sm" [(ngModel)]="isPayingToCustomer" name="isPayingToCustomerx" #isPayingToCustomerx="ngModel">
+              <option value='false'>Müşteriden Tahsilat</option>
+              <option value='true'>Müşteriye Ödeme</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 col-md-4">Müşteri</div>
+          <div class="col-12 col-md-8" [ngClass]="{'has-error': (!customer.valid && customer.touched), 'has-success': (customer.valid && customer.touched)}">
+            <input auto-complete [(ngModel)]="customerPayment.customer" [source]="customers" [list-formatter]="autocompleteListFormatter"
+              name="customer" #customer="ngModel" display-property-name="name" value-property-name="appellation" no-match-found-text="Bulunamadı"
+              (valueChanged)="customerChanged($event)" placeholder="Müşteriler" class="form-control" required/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 col-md-4">Açıklama</div>
+          <div class="col-12 col-md-8">
+            <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="paymentCheckbook.description" name="description" #description="ngModel"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-2">
+            <p>İşlem Tarihi</p>
+            <my-date-picker [options]="myDatePickerOptions" [selector]="dateSelector" (click)="dateSelector={open : true};"
+            [(ngModel)]="billDate" name="paymentDate" #paymentDate="ngModel" required></my-date-picker>
+          </div>
+          <div class="col-12 col-md-2">
+            <p>Vadesi</p>
+            <my-date-picker [options]="myDatePickerOptions" [selector]="dateSelector1" (click)="dateSelector1={open : true};"
+            [(ngModel)]="paymentDatee" name="paymentDatex" #paymentDatex="ngModel" required></my-date-picker>
+          </div>
+          <div class="col-12 col-md-2">
+            <p>Tutar(TL)</p>
+            <input class="form-control" type="number" placeholder="Tutar(TL)" [(ngModel)]="checkbookItem.amount" name="amount" #amount="ngModel"/>
+          </div>
+          <div class="col-12 col-md-2">
+            <p>Seri No</p>
+            <input class="form-control" type="text" placeholder="Seri No" [(ngModel)]="checkbookItem.serialNo" name="serialNo" #serialNo="ngModel"/>
+          </div>
+          <div class="col-12 col-md-2">
+            <p>Banka</p>
+            <input class="form-control" type="text" placeholder="Banka" [(ngModel)]="checkbookItem.bankName" name="bankName" #bankName="ngModel"/>
+          </div>
+          <div class="col-12 col-md-1">
+            <p>Ekle</p>
+            <button class="btn btn-success" (click)="addCheckbookItem()">+</button>
+          </div>
+        </div>
+
+        <div class="row urun" >
+            <div class="horizontal-scroll">
+              <table class="table table-hover">
+                <thead>
+                <tr class="black-muted-bg">
+                  <th class="align-left first-th"><b>Tutar</b></th>
+                  <th class="align-left"><b>Vade</b></th>
+                  <th class="align-left"><b>Banka</b></th>
+                  <th class="align-left"><b>No</b></th>
+                  <th class="align-left"><b>Sil</b></th>                  
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let itemq of paymentCheckbook.checkbookItems; let ind=index" class="no-top-border">
+                  <td class="align-left">{{itemq.amount}}</td>
+                  <td class="align-left">{{itemq.paymentDate}}</td>
+                  <td class="align-left">{{itemq.bankName}}</td>
+                  <td class="align-left">{{itemq.serialNo}}</td>
+                  <td class="align-right">
+                    <button class="btn btn-danger" (click)="deleteItemFromLine(ind)"><i class="ion-trash-a"></i></button>
+                  </td>
+      
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        <div class="row errors">
+          <div class="col-12 col-md-8">
+            
+          </div>
+        </div>
+  
+        <div class="modal-footer">
+          <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addCustomerPayment()">Kaydet</button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="type==='bill'" class="modal-body">
+        <form #f="ngForm">
+          <div class="row">
+            <div class="col-6 col-md-4">İşlem Tarihi</div>
+            <div class="col-12 col-md-8" [ngClass]="{'has-error': (!paymentDate.valid && paymentDate.touched), 'has-success': (paymentDate.valid && paymentDate.touched)}">
+              <my-date-picker [options]="myDatePickerOptions" [selector]="dateSelector" (click)="dateSelector={open : true};"
+                [(ngModel)]="billDate" name="paymentDate" #paymentDate="ngModel" required></my-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-4">İlk Senet Vadesi</div>
+            <div class="col-12 col-md-8" [ngClass]="{'has-error': (!paymentDatex.valid && paymentDatex.touched), 'has-success': (paymentDatex.valid && paymentDatex.touched)}">
+              <my-date-picker [options]="myDatePickerOptions" [selector]="dateSelector1" (click)="dateSelector1={open : true};"
+                [(ngModel)]="paymentDatee" name="paymentDatex" #paymentDatex="ngModel" required></my-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-4">Tutar(TL)</div>
+            <div class="col-12 col-md-8" [ngClass]="{'has-error': (!amount.valid && amount.touched), 'has-success': (amount.valid && amount.touched)}">
+              <input class="form-control" type="number" placeholder="Tutar(TL)" [(ngModel)]="paymentBill.amount" name="amount" #amount="ngModel"
+                required/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-4">Senet Sayısı</div>
+            <div class="col-12 col-md-8" [ngClass]="{'has-error': (!billCountx.valid && billCountx.touched), 'has-success': (billCountx.valid && billCountx.touched)}">
+              <input class="form-control" type="number" placeholder="Senet Sayısı" [(ngModel)]="billCount" name="billCountx" #billCountx="ngModel"
+                required/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-4">Açıklama</div>
+            <div class="col-12 col-md-8">
+              <input class="form-control" type="text" placeholder="Açıklama" [(ngModel)]="paymentBill.description" name="description" #description="ngModel"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-4"></div>
+            <div class="col-12 col-md-8">
+              <button class="btn btn-success" (click)="addBillInstallments()">+ Senetleri Ekle</button>
+            </div>
+          </div>
+  
+          <div class="row urun" >
+              <div class="horizontal-scroll">
+                <table class="table table-hover">
+                  <thead>
+                  <tr class="black-muted-bg">
+                    <th class="align-left first-th"><b>Tutar</b></th>
+                    <th class="align-left"><b>Vade</b></th>
+                    <th class="align-left"><b>Banka</b></th>
+                    <th class="align-left"><b>No</b></th>
+                    <th class="align-left"><b>Sil</b></th>                  
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let itemq of paymentBill.billInstallments; let ind=index" class="no-top-border">
+                    <td class="align-left">{{itemq.amount}}</td>
+                    <td class="align-left">{{itemq.paymentDate}}</td>
+                    <td class="align-left">{{itemq.bankName}}</td>
+                    <td class="align-left">{{itemq.serialNo}}</td>
+                    <td class="align-right">
+                      <button class="btn btn-danger" (click)="deleteItemFromLine(ind)"><i class="ion-trash-a"></i></button>
+                    </td>
+        
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+  
+          <div class="row errors">
+            <div class="col-12 col-md-8">
+              
+            </div>
+          </div>
+    
+          <div class="modal-footer">
+            <button *ngIf="!id" class="btn btn-primary confirm-btn" (click)="addCustomerPayment()">Kaydet</button>
+          </div>
+        </form>
+      </div>
+
+</div>
